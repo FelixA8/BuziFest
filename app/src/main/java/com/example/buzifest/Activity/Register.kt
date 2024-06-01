@@ -5,30 +5,46 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.buzifest.R
 
 class Register : AppCompatActivity() {
 
-    private lateinit var register_username: EditText
-    private lateinit var register_email: EditText
-    private lateinit var register_password: EditText
-    private lateinit var register_phoneNumber: EditText
-    private lateinit var register_button: Button
+    private lateinit var registerUsername: EditText
+    private lateinit var registerEmail: EditText
+    private lateinit var registerPassword: EditText
+    private lateinit var registerPhoneNumber: EditText
+    private lateinit var registerButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        register_username = findViewById(R.id.register_etUsername)
-        register_email = findViewById(R.id.register_etEmail)
-        register_password = findViewById(R.id.register_etPassword)
-        register_phoneNumber = findViewById(R.id.register_phoneNumber)
-        register_button = findViewById(R.id.register_btnNext)
+        registerUsername = findViewById(R.id.register_etUsername)
+        registerEmail = findViewById(R.id.register_etEmail)
+        registerPassword = findViewById(R.id.register_etPassword)
+        registerPhoneNumber = findViewById(R.id.register_phoneNumber)
+        registerButton = findViewById(R.id.register_btnNext)
 
 
-        register_button.setOnClickListener{
-            val intent = Intent(this, Biodata::class.java)
-            startActivity(intent)
+        registerButton.setOnClickListener{
+            if(registerUsername.text.isEmpty() || registerUsername.text.length <= 4){
+                Toast.makeText(this, "Username must be more than 4 characters.", Toast.LENGTH_SHORT).show()
+            } else if(registerEmail.text.isEmpty() || !registerEmail.text.contains(".com")){
+                Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+            } else if(registerPassword.text.isEmpty() || registerPassword.text.length < 8){
+                Toast.makeText(this, "Password must be 8 characters or more.", Toast.LENGTH_SHORT).show()
+            } else if(registerPhoneNumber.text.isEmpty() || registerPhoneNumber.text.length < 12) {
+                Toast.makeText(this, "Please Input a valid Phone Number", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(this, Biodata::class.java).apply {
+                    putExtra("username", registerUsername.text.toString())
+                    putExtra("email", registerEmail.text.toString())
+                    putExtra("password", registerPassword.text.toString())
+                    putExtra("phonenumber", registerPhoneNumber.text.toString())
+                }
+                startActivity(intent)
+            }
         }
     }
 }
