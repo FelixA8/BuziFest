@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "83950225318",
+    "project_id": "buzifest",
+    "storage_bucket": "buzifest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83950225318:android:226fc9296a66c51443b167",
+        "android_client_info": {
+          "package_name": "com.example.buzifest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBe7753ww7NE8MHBxsFIVzq_ZU8XNQqP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
