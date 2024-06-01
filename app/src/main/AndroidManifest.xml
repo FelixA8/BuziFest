@@ -12,6 +12,12 @@
         android:theme="@style/Theme.BuziFest"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.Biodata"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.Register"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Home"
             android:exported="false" />
         <activity
