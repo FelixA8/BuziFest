@@ -53,11 +53,24 @@ class Home : AppCompatActivity() {
     }
 
     private fun getUserFromFirestoreByEmail(email: String): User {
+        if(email.isEmpty()) {
+            return User("", "", "", "", "", "", 0,0,"")
+        }
+
+        lateinit var username:String
+        lateinit var phoneNumber:String
+        lateinit var firstName:String
+        lateinit var lastName:String
+        lateinit var idCardNumber:String
+        lateinit var address:String
+        lateinit var balance:String
+        lateinit var asset:String
+        println(email)
         val db = FirebaseFirestore.getInstance()
 
         // Reference to the document with the given email as ID
         val docRef = db.collection("users").document(email)
-        lateinit var fetchedUser: User
+        var fetchedUser: User = User("", "", "", "", "", "", 0,0,"")
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
@@ -65,18 +78,17 @@ class Home : AppCompatActivity() {
                     val userData = document.data
                     if (userData != null) {
                         // Process the retrieved data
-                        val username = userData["username"] as? String
-                        val email = userData["email"] as? String
-                        val phoneNumber = userData["phoneNumber"] as? String
-                        val firstName = userData["firstName"] as? String
-                        val lastName = userData["lastName"] as? String
-                        val idCardNumber = userData["idCardNumber"] as? String
-                        val address = userData["address"] as? String
-                        val balance = userData["balance"] as? Int
-                        val asset = userData["asset"] as? Int
+                        username = (userData["username"] as? String).toString()
+                        phoneNumber = (userData["phoneNumber"] as? String).toString()
+                        firstName = (userData["firstName"] as? String).toString()
+                        lastName = (userData["lastName"] as? String).toString()
+                        idCardNumber = (userData["idCardNumber"] as? String).toString()
+                        address = (userData["address"] as? String).toString()
+                        balance = (userData["balance"] as? Number).toString()
+                        asset = (userData["asset"] as? Number).toString()
                         // Print or use the retrieved data
-                        fetchedUser = User(username!!, firstName!!, lastName!!, email!!, idCardNumber!!, phoneNumber!!, balance!!, asset!!, address!!)
-                        println("User Data: $userData")
+                        fetchedUser = User(username, firstName, lastName, email, idCardNumber, phoneNumber, balance.toInt(), asset.toInt(), address)
+                        println("User Data: $fetchedUser")
                     }
                 } else {
                     // Document does not exist
