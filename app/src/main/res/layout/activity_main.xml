@@ -43,13 +43,13 @@
                 />
 
             <EditText
-                android:id="@+id/login_etUsername"
+                android:id="@+id/login_etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:background="@drawable/login_custom_edittext"
                 android:layout_marginHorizontal="50sp"
                 android:layout_marginVertical="20sp"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 android:hint="Username"
                 android:paddingLeft="15sp"
                 />

@@ -66,6 +66,8 @@ class Biodata : AppCompatActivity() {
             "lastName" to lastName,
             "idCardNumber" to idCardNumber,
             "address" to address,
+            "balance" to 0,
+            "asset" to 0,
         )
 
         db.collection("users").document(email)
