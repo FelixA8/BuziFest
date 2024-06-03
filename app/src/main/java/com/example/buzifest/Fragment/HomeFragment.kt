@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import com.example.buzifest.Data.DUMMY_USERPORTFOLIODATA
+import com.example.buzifest.Helper.*
 import com.example.buzifest.R
+import com.example.buzifest.databinding.FragmentHomeBinding
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,9 +38,23 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        val binding = FragmentHomeBinding.inflate(inflater)
+        //CALL DATA FROM FIRESTORE
+        lifecycleScope.launch {
+            val portfolioList = getPortfoliosData() //CallPortfolioData
+            val userData = getUserFromFirestoreByEmail(currentEmail) //CallUserData
+            val userPortfolioList = getAllUserPortfoliosData()
+            val userPortfolio = DUMMY_USERPORTFOLIODATA[0]
+            for (portfolio in portfolioList) {
+                binding.test.text = portfolio.id
+                userPortfolio.portfolioID = portfolio.id
+            }
+            println(userPortfolioList)
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return binding.root
     }
 
     companion object {
