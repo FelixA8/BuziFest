@@ -9,9 +9,9 @@ data class UserPortfolio(
 
 val DUMMY_USERPORTFOLIODATA = arrayOf(
     UserPortfolio(
-        "felix.anderson@gmail.com",
+        "johansen@gmail.com",
         DUMMY_PORTFOLIODATA[0].id,
-        20000,
+        15000,
         0,
     )
 )

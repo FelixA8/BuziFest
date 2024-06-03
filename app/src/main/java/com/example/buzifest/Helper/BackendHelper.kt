@@ -1,8 +1,6 @@
 package com.example.buzifest.Helper
 
-import com.example.buzifest.Data.Portfolio
-import com.example.buzifest.Data.User
-import com.example.buzifest.Data.UserPortfolio
+import com.example.buzifest.Data.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
@@ -71,6 +69,14 @@ public fun addPortfolio(portfolio: Portfolio){
         }
 }
 
+public fun changeUserAsset(amount:Int, email:String) {
+    db.collection("users").document(email).update("asset", amount).addOnSuccessListener {
+        println("User email successfully updated!")
+    }.addOnFailureListener { e ->
+        println("Error updating user email: $e")
+    }
+}
+
 public fun addUserPortfolio(userPortfolio: UserPortfolio) {
     val value = hashMapOf(
         "email" to userPortfolio.userEmail,
@@ -80,6 +86,24 @@ public fun addUserPortfolio(userPortfolio: UserPortfolio) {
     )
 
     db.collection("userPortfolios").document()
+        .set(value)
+        .addOnSuccessListener {
+            // Successfully added user to Firestore
+        }
+        .addOnFailureListener { e ->
+            // Failed to add user to Firestore
+            print(e)
+        }
+}
+
+public fun addNews(news: News) {
+    val value = hashMapOf(
+        "newsTitle" to news.newsTitle,
+        "newsImageUrl" to news.newsImageUrl,
+        "newsLinkUrl" to news.newsLinkUrl
+    )
+
+    db.collection("news").document()
         .set(value)
         .addOnSuccessListener {
             // Successfully added user to Firestore
@@ -141,6 +165,23 @@ suspend fun getAllUserPortfoliosData(): List<UserPortfolio> {
     }
 }
 
-suspend fun getAllPurchaseAmountOfPortfolio(portfolioID:String){
-
+suspend fun getAllPurchaseAmountOfPortfolio(portfolioID:String): PortfolioSummary {
+    val documents = db.collection("userPortfolios").get().await()
+    var total = 0
+    var count = 0
+    return try {
+        for (document in documents.documents) {
+            val id = document["portfolioID"] as? String
+            val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
+            if(id == portfolioID) {
+                total+=purchaseAmount
+                count++
+            }
+        }
+        PortfolioSummary(total,count)
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        PortfolioSummary(0,0)
+    }
 }
+
