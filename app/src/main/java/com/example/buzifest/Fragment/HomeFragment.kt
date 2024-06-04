@@ -29,6 +29,11 @@ import kotlinx.coroutines.launch
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+/**
+ * A simple [Fragment] subclass.
+ * Use the [HomeFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
 class HomeFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var portfolioRecyclerView: RecyclerView
@@ -76,12 +81,12 @@ class HomeFragment : Fragment() {
             val portfolioList = getPortfoliosData() //CallPortfolioData
             val userData = getUserFromFirestoreByEmail(currentEmail) //CallUserData
             val userPortfolioList = getAllUserPortfoliosData() //Call User Portfolio List
+            val currentUserData = getCurrentUserValueData(currentEmail) //Call User Value
             val newsList = getNewsData() //Call news List
             println(portfolioList)
             portfolioAdapter = PortfolioAdapter(portfolioList, viewLifecycleOwner)
             portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             portfolioRecyclerView.adapter = portfolioAdapter
-
 
             homeNewsAdapter = HomeNewsAdapter(newsList)
             newsRecyclerView.layoutManager = LinearLayoutManager(context)

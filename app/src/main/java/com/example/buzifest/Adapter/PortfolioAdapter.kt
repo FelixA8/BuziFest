@@ -47,11 +47,13 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
 
                 // Debugging: Print the fetched data
                 println("Fetched amount: $amount")
-                println("Fetched totalInvestor: $totalInvestor")
-
+                println("Fetched fundingTarget: ${currentItem.fundingTarget}")
+                println((amount.toDouble()/currentItem.fundingTarget.toDouble()))
                 // Ensure currentItem.fundingTarget is not zero to avoid division by zero
                 if (currentItem.fundingTarget != 0) {
-                    holder.portfolioPercentage.text = ((amount / currentItem.fundingTarget) * 100).toString() + "% gathered"
+                    val result = String.format("%.2f", (amount.toDouble() / currentItem.fundingTarget.toDouble()) * 100)
+                    holder.portfolioPercentage.text = result + "% gathered"
+
                 } else {
                     holder.portfolioPercentage.text = "Funding target is zero"
                 }

@@ -227,3 +227,23 @@ suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortf
         emptyList()
     }
 }
+suspend fun getCurrentUserValueData(currentEmail:String): ValueSummaryData {
+    var totalValue = 0
+    var totalEarning = 0
+    return try {
+        val documents = db.collection("userPortfolios").get().await()
+        for (document in documents.documents) {
+            val email = (document["email"] as? String).orEmpty()
+            if(email == currentEmail) {
+                val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
+                val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
+                totalValue+=purchaseAmount
+                totalEarning+=totalProfit
+            }
+        }
+        ValueSummaryData(totalValue, totalEarning)
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        ValueSummaryData(0, 0)
+    }
+}
