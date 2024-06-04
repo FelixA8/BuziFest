@@ -8,14 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortfolioAdapter
-import com.example.buzifest.Data.DUMMY_PORTFOLIODATA
-import com.example.buzifest.Data.DUMMY_USERPORTFOLIODATA
 import com.example.buzifest.Data.News
 import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Helper.*
@@ -39,13 +35,6 @@ class HomeFragment : Fragment() {
     private lateinit var portfolioRecyclerView: RecyclerView
     private lateinit var portfolioAdapter: PortfolioAdapter
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var portfolioValue: TextView
-    private lateinit var portfolioEarnings: TextView
-
-    // news recyler
-    private lateinit var newsRecyclerView:RecyclerView
-    private lateinit var homeNewsAdapter: HomeNewsAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -58,11 +47,6 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
 
         portfolioRecyclerView = binding.homePortfolioRecycler
-
-        newsRecyclerView = binding.homeRecyclerViewNews
-
-        portfolioValue = binding.homePortfolioValue
-        portfolioEarnings = binding.homeEarnings
 
         binding.homeMenuSettings.setOnClickListener {
             val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
@@ -78,19 +62,11 @@ class HomeFragment : Fragment() {
             val portfolioList = getPortfoliosData() //CallPortfolioData
             val userData = getUserFromFirestoreByEmail(currentEmail) //CallUserData
             val userPortfolioList = getAllUserPortfoliosData() //Call User Portfolio List
-            val newsList = getNewsData() //Call news List
+            val newsList = getNewsData() //Call User List
             println(portfolioList)
             portfolioAdapter = PortfolioAdapter(portfolioList, viewLifecycleOwner)
-            portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            portfolioRecyclerView.layoutManager = LinearLayoutManager(context)
             portfolioRecyclerView.adapter = portfolioAdapter
-
-
-            homeNewsAdapter = HomeNewsAdapter(newsList)
-            newsRecyclerView.layoutManager = LinearLayoutManager(context)
-            newsRecyclerView.adapter = homeNewsAdapter
-
-
-
 //            val dummy =DUMMY_USERPORTFOLIODATA[0]
 //            dummy.portfolioID = DUMMY_PORTFOLIODATA[0].id
 //            changeUserAsset(dummy.purchaseAmount+dummy.totalProfit+userData!!, userData.email)
@@ -103,8 +79,6 @@ class HomeFragment : Fragment() {
 //            }
             println(userPortfolioList)
         }
-
-
 
         // Inflate the layout for this fragment
         return binding.root

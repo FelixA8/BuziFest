@@ -48,6 +48,7 @@ public fun addPortfolio(portfolio: Portfolio){
         "address" to portfolio.address,
         "province" to portfolio.province,
         "imageUrl" to portfolio.image,
+        "logoUrl" to portfolio.logo,
         "storeType" to portfolio.storeType,
         "fundingTarget" to portfolio.fundingTarget,
         "description" to portfolio.description,
@@ -144,6 +145,7 @@ suspend fun getPortfoliosData(): List<Portfolio> {
             val address = (document["address"] as? String).orEmpty()
             val province = (document["province"] as? String).orEmpty()
             val imageUrl = (document["imageUrl"] as? String).orEmpty()
+            val logoUrl = (document["logoUrl"] as? String).orEmpty()
             val publisher = (document["publisher"] as? String).orEmpty()
             val description = (document["description"] as? String).orEmpty()
             val storeName = (document["storeName"] as? String).orEmpty()
@@ -154,7 +156,7 @@ suspend fun getPortfoliosData(): List<Portfolio> {
             val fundingTarget = (document["fundingTarget"] as? Number)?.toInt() ?: 0
             val grossProfit = (document["grossProfit"] as? Number)?.toInt() ?: 0
 
-            val data = Portfolio(id, storeName, address, province, imageUrl, storeType, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
+            val data = Portfolio(id, storeName, address, province, imageUrl, logoUrl, storeType, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
             portfolios.add(data)
         }
         portfolios
@@ -176,6 +178,28 @@ suspend fun getAllUserPortfoliosData(): List<UserPortfolio> {
             val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
             val data = UserPortfolio(email, portfolioID, purchaseAmount, totalProfit)
             userPortfolios.add(data)
+        }
+        userPortfolios
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        emptyList()
+    }
+}
+
+suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortfolio> {
+    val userPortfolios = mutableListOf<UserPortfolio>()
+
+    return try {
+        val documents = db.collection("userPortfolios").get().await()
+        for (document in documents.documents) {
+            val email = (document["email"] as? String).orEmpty()
+            if(email == currentEmail) {
+                val portfolioID = (document["portfolioID"] as? String).orEmpty()
+                val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
+                val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
+                val data = UserPortfolio(email, portfolioID, purchaseAmount, totalProfit)
+                userPortfolios.add(data)
+            }
         }
         userPortfolios
     } catch (e: Exception) {

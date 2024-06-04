@@ -42,7 +42,6 @@ private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<PortfolioAdapt
 
                 // Fetch the portfolio amounts
                 val portfolioData = getAllPurchaseAmountOfPortfolio(portfolioID = currentItem.id)
-
                 val amount = portfolioData.totalInvested // Amount of invested portfolio
                 val totalInvestor = portfolioData.totalInvestor // Amount of total investors in a portfolio
 
