@@ -58,9 +58,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
 
         portfolioRecyclerView = binding.homePortfolioRecycler
-
         newsRecyclerView = binding.homeRecyclerViewNews
-
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
 
