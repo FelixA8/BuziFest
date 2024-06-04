@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Helper.*
 import com.example.buzifest.R
@@ -64,6 +65,10 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
                 println("Error fetching portfolio data: ${e.message}")
             }
         }
+
+        Glide.with(holder.itemView.context)
+            .load(currentItem.logo)
+            .into(holder.portofolioLogo)
 
         holder.portfolioName.text = currentItem.storeName
         holder.portfolioRemaining.text = currentItem.fundingTarget.toString()/// still not correct, needs current funding variable

@@ -206,6 +206,8 @@ suspend fun getAllPurchaseAmountOfPortfolio(portfolioID:String): PortfolioSummar
     }
 }
 
+
+
 suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortfolio> {
     val userPortfolios = mutableListOf<UserPortfolio>()
 

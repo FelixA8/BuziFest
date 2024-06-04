@@ -83,6 +83,8 @@ class HomeFragment : Fragment() {
             val userPortfolioList = getAllUserPortfoliosData() //Call User Portfolio List
             val currentUserData = getCurrentUserValueData(currentEmail) //Call User Value
             val newsList = getNewsData() //Call news List
+            val userPortfolio = getAllCurrentUserPortfoliosData(currentEmail)
+
             println(portfolioList)
             portfolioAdapter = PortfolioAdapter(portfolioList, viewLifecycleOwner)
             portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -91,6 +93,7 @@ class HomeFragment : Fragment() {
             homeNewsAdapter = HomeNewsAdapter(newsList)
             newsRecyclerView.layoutManager = LinearLayoutManager(context)
             newsRecyclerView.adapter = homeNewsAdapter
+
 
 
 
