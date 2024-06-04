@@ -178,7 +178,6 @@ suspend fun getAllPurchaseAmountOfPortfolio(portfolioID:String): PortfolioSummar
                 count++
             }
         }
-        println(total)
         PortfolioSummary(total,count)
     } catch (e: Exception) {
         println("Error getting documents: $e")

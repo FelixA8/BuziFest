@@ -15,6 +15,7 @@ import com.example.buzifest.Adapter.PortfolioAdapter
 import com.example.buzifest.Data.DUMMY_PORTFOLIODATA
 import com.example.buzifest.Data.DUMMY_USERPORTFOLIODATA
 import com.example.buzifest.Data.News
+import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Helper.*
 import com.example.buzifest.MainActivity
 import com.example.buzifest.R
@@ -48,10 +49,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
 
         portfolioRecyclerView = binding.homePortfolioRecycler
-        portfolioAdapter = PortfolioAdapter(DUMMY_PORTFOLIODATA, viewLifecycleOwner)
 
-        portfolioRecyclerView.layoutManager = LinearLayoutManager(context)
-        portfolioRecyclerView.adapter = portfolioAdapter
         binding.homeMenuSettings.setOnClickListener {
             val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
             val editor = sharedpreferences.edit()
@@ -66,17 +64,20 @@ class HomeFragment : Fragment() {
             val portfolioList = getPortfoliosData() //CallPortfolioData
             val userData = getUserFromFirestoreByEmail(currentEmail) //CallUserData
             val userPortfolioList = getAllUserPortfoliosData() //Call User Portfolio List
-
+            println(portfolioList)
+            portfolioAdapter = PortfolioAdapter(portfolioList, viewLifecycleOwner)
+            portfolioRecyclerView.layoutManager = LinearLayoutManager(context)
+            portfolioRecyclerView.adapter = portfolioAdapter
 //            val dummy =DUMMY_USERPORTFOLIODATA[0]
 //            dummy.portfolioID = DUMMY_PORTFOLIODATA[0].id
 //            changeUserAsset(dummy.purchaseAmount+dummy.totalProfit+userData!!, userData.email)
 //            addUserPortfolio(dummy)
 
-            for (portfolio in portfolioList) {
-                val amount = getAllPurchaseAmountOfPortfolio(portfolioID = portfolio.id).totalInvested //Call the amount of invested portfolio
-                val totalInvestor = getAllPurchaseAmountOfPortfolio(portfolioID = portfolio.id).totalInvestor //Call the amount of total investor in a portfolio
-
-            }
+//            for (portfolio in portfolioList) {
+//                val amount = getAllPurchaseAmountOfPortfolio(portfolioID = portfolio.id).totalInvested //Call the amount of invested portfolio
+//                val totalInvestor = getAllPurchaseAmountOfPortfolio(portfolioID = portfolio.id).totalInvestor //Call the amount of total investor in a portfolio
+//
+//            }
             println(userPortfolioList)
         }
 
