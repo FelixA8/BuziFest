@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.buzifest.Adapter.PortfolioAdapter
 import com.example.buzifest.Data.DUMMY_PORTFOLIODATA
 import com.example.buzifest.Data.DUMMY_USERPORTFOLIODATA
 import com.example.buzifest.Data.News
@@ -30,6 +33,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class HomeFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var portfolioRecyclerView: RecyclerView
+    private lateinit var portfolioAdapter: PortfolioAdapter
+    private lateinit var binding: FragmentHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -38,7 +44,14 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentHomeBinding.inflate(inflater)
+
+        binding = FragmentHomeBinding.inflate(inflater)
+
+        portfolioRecyclerView = binding.homePortfolioRecycler
+        portfolioAdapter = PortfolioAdapter(DUMMY_PORTFOLIODATA, viewLifecycleOwner)
+
+        portfolioRecyclerView.layoutManager = LinearLayoutManager(context)
+        portfolioRecyclerView.adapter = portfolioAdapter
         binding.homeMenuSettings.setOnClickListener {
             val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
             val editor = sharedpreferences.edit()
@@ -46,6 +59,7 @@ class HomeFragment : Fragment() {
             editor.apply()
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
+
         }
         //CALL DATA FROM FIRESTORE
         lifecycleScope.launch {
@@ -55,14 +69,13 @@ class HomeFragment : Fragment() {
 
 //            val dummy =DUMMY_USERPORTFOLIODATA[0]
 //            dummy.portfolioID = DUMMY_PORTFOLIODATA[0].id
-//            changeUserAsset(dummy.purchaseAmount+dummy.totalProfit+userData!!.asset, userData.email)
+//            changeUserAsset(dummy.purchaseAmount+dummy.totalProfit+userData!!, userData.email)
 //            addUserPortfolio(dummy)
 
             for (portfolio in portfolioList) {
                 val amount = getAllPurchaseAmountOfPortfolio(portfolioID = portfolio.id).totalInvested //Call the amount of invested portfolio
                 val totalInvestor = getAllPurchaseAmountOfPortfolio(portfolioID = portfolio.id).totalInvestor //Call the amount of total investor in a portfolio
-                //Start Code Here...
-                println("${portfolio.storeName} ${amount} ${totalInvestor}")
+
             }
             println(userPortfolioList)
         }

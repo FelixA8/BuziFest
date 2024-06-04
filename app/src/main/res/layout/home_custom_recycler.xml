@@ -66,6 +66,7 @@
         </RelativeLayout>
         
         <TextView
+            android:id="@+id/home_custom_horizontal_remaining"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="60.000,000 remaining"
@@ -98,7 +99,7 @@
                 android:layout_marginLeft="25sp">
 
                 <TextView
-                    android:id="@+id/home_custom_gross_profit"
+                    android:id="@+id/home_custom_horizontal_gross_profit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="20.000.000,00"
@@ -134,7 +135,7 @@
 
             <TextView
                 android:layout_marginLeft="10sp"
-                android:id="@+id/home_custom_shares_released"
+                android:id="@+id/home_custom_horizontal_shares_released"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="20.000.000,00"
