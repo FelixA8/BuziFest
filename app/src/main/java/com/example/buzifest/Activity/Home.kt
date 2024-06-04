@@ -28,6 +28,7 @@ class Home : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         val email = intent.getStringExtra("email")
         currentEmail = email!!
+        addPortfolio(DUMMY_PORTFOLIODATA[0])
         loadFragment(HomeFragment())
         bottomNav = findViewById(R.id.bottomNav) as BottomNavigationView
         bottomNav.setOnItemSelectedListener {

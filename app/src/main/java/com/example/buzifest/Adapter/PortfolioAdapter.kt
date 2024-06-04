@@ -39,7 +39,6 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
 
         lifecycleOwner.lifecycleScope.launch {
             try {
-
                 // Fetch the portfolio amounts
                 val portfolioData = getAllPurchaseAmountOfPortfolio(portfolioID = currentItem.id)
 
