@@ -62,6 +62,11 @@ class HomeFragment : Fragment() {
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
 
+        newsRecyclerView = binding.homeRecyclerViewNews
+
+        portfolioValue = binding.homePortfolioValue
+        portfolioEarnings = binding.homeEarnings
+
         binding.homeMenuSettings.setOnClickListener {
             val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
             val editor = sharedpreferences.edit()

@@ -8,7 +8,6 @@ data class Portfolio(
     val address:String,
     val province:String,
     val image:String,
-    val logo:String,
     val storeType:String,
 //    val fundingCollected:Int,
     val fundingTarget:Int,
@@ -24,3 +23,19 @@ data class Portfolio(
 fun generateUUID(): String {
     return UUID.randomUUID().toString()
 }
+
+public val DUMMY_PORTFOLIODATA = arrayOf(Portfolio(
+    generateUUID(),
+    "soto madura 99",
+    "Jl. Juanda",
+    "Jambi",
+    "https://blog.meyerfood.id/wp-content/uploads/2020/09/soto-ayam-madura.jpg",
+    "Food n Beverages",
+    3000000,
+    "lorem ipsum fdas",
+    20.0,
+    3,
+    "FelixA",
+    "Soto Dunia ID",
+    100000,
+))

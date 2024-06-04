@@ -6,3 +6,12 @@ data class UserPortfolio(
     val purchaseAmount:Int,
     val totalProfit:Int
 )
+
+val DUMMY_USERPORTFOLIODATA = arrayOf(
+    UserPortfolio(
+        "johansen@gmail.com",
+        DUMMY_PORTFOLIODATA[0].id,
+        15000,
+        0,
+    )
+)

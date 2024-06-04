@@ -14,7 +14,7 @@ import com.example.buzifest.R
 import kotlinx.coroutines.launch
 
 class PortfolioAdapter(private val portfolioList: List<Portfolio>,
-private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
+                       private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val portofolioLogo = itemView.findViewById<ImageView>(R.id.home_custom_horizontal_logo)
@@ -42,6 +42,7 @@ private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<PortfolioAdapt
 
                 // Fetch the portfolio amounts
                 val portfolioData = getAllPurchaseAmountOfPortfolio(portfolioID = currentItem.id)
+
                 val amount = portfolioData.totalInvested // Amount of invested portfolio
                 val totalInvestor = portfolioData.totalInvestor // Amount of total investors in a portfolio
 
