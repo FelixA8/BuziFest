@@ -119,7 +119,7 @@ suspend fun getNewsData(): List<News> {
     val news = mutableListOf<News>()
 
     return try {
-        val documents = db.collection("portfolios").get().await()
+        val documents = db.collection("news").get().await()
         for (document in documents) {
             val newsLinkUrl = (document["newsLinkUrl"] as? String).orEmpty()
             val newsImageUrl = (document["newsImageUrl"] as? String).orEmpty()
@@ -130,7 +130,7 @@ suspend fun getNewsData(): List<News> {
     } catch (e: Exception) {
         println("Error getting documents: $e")
         emptyList()
-    }
+        }
 }
 
 suspend fun getPortfoliosData(): List<Portfolio> {
