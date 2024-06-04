@@ -114,6 +114,25 @@ public fun addNews(news: News) {
         }
 }
 
+suspend fun getNewsData(): List<News> {
+    val db = FirebaseFirestore.getInstance()
+    val news = mutableListOf<News>()
+
+    return try {
+        val documents = db.collection("portfolios").get().await()
+        for (document in documents) {
+            val newsLinkUrl = (document["newsLinkUrl"] as? String).orEmpty()
+            val newsImageUrl = (document["newsImageUrl"] as? String).orEmpty()
+            val newsTitle = (document["newsTitle"] as? String).orEmpty()
+            news.add(News(newsLinkUrl, newsTitle, newsImageUrl))
+        }
+        news
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        emptyList()
+    }
+}
+
 suspend fun getPortfoliosData(): List<Portfolio> {
     val db = FirebaseFirestore.getInstance()
     val portfolios = mutableListOf<Portfolio>()

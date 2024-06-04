@@ -64,6 +64,7 @@ class HomeFragment : Fragment() {
             val portfolioList = getPortfoliosData() //CallPortfolioData
             val userData = getUserFromFirestoreByEmail(currentEmail) //CallUserData
             val userPortfolioList = getAllUserPortfoliosData() //Call User Portfolio List
+            val newsList = getNewsData() //Call User List
             println(portfolioList)
             portfolioAdapter = PortfolioAdapter(portfolioList, viewLifecycleOwner)
             portfolioRecyclerView.layoutManager = LinearLayoutManager(context)
