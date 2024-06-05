@@ -19,6 +19,14 @@ class MainActivity : AppCompatActivity() {
         const val SHARED_PREFS = "shared_prefs"
         const val EMAIL_KEY = "email_key"
         const val PASSWORD_KEY = "password_key"
+        const val USERNAME_KEY = "username_key"
+        const val FIRSTNAME_KEY = "firstname_key"
+        const val LASTNAME_KEY = "lastname_key"
+        const val IDCARDNUMBER_KEY = "idcardnumber_key"
+        const val PHONENUMBER_KEY = "phonenumber_key"
+        const val BALANCE_KEY = "balance_key"
+        const val ASSET_KEY = "asset_key"
+        const val ADDRESS_KEY = "address_key"
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
@@ -32,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sharedpreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+        sharedpreferences = getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
         val loggedEmail = sharedpreferences.getString(EMAIL_KEY, null)
         val loggedPassword = sharedpreferences.getString(PASSWORD_KEY, null)
         if(loggedEmail != null && loggedPassword != null) {

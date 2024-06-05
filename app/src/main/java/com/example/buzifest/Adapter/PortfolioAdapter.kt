@@ -47,9 +47,6 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
                 val totalInvestor = portfolioData.totalInvestor // Amount of total investors in a portfolio
 
                 // Debugging: Print the fetched data
-                println("Fetched amount: $amount")
-                println("Fetched fundingTarget: ${currentItem.fundingTarget}")
-                println((amount.toDouble()/currentItem.fundingTarget.toDouble()))
                 // Ensure currentItem.fundingTarget is not zero to avoid division by zero
                 if (currentItem.fundingTarget != 0) {
                     val result = String.format("%.2f", (amount.toDouble() / currentItem.fundingTarget.toDouble()) * 100)

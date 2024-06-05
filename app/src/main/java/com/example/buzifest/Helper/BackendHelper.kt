@@ -1,5 +1,7 @@
 package com.example.buzifest.Helper
 
+import android.content.Context
+import android.provider.ContactsContract.Data
 import com.example.buzifest.Data.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -41,7 +43,7 @@ suspend fun getUserFromFirestoreByEmail(email: String): User? {
 }
 
 //Add New Portfolio
-public fun addPortfolio(portfolio: Portfolio){
+public fun addPortfolio(portfolio: Portfolio, context: Context){
     val value = hashMapOf(
         "id" to portfolio.id,
         "storeName" to portfolio.storeName,
@@ -58,6 +60,8 @@ public fun addPortfolio(portfolio: Portfolio){
         "publisher" to portfolio.publisher,
         "grossProfit" to portfolio.grossProfit,
     )
+    val sqliteDB = DatabaseHelper(context = context)
+    sqliteDB.insertPortfolio(portfolio)
 
     db.collection("portfolios").document(portfolio.id)
         .set(value)
@@ -78,15 +82,17 @@ public fun changeUserAsset(amount:Int, email:String) {
     }
 }
 
-public fun addUserPortfolio(userPortfolio: UserPortfolio) {
+public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
     val value = hashMapOf(
+        "id" to userPortfolio.id,
         "email" to userPortfolio.userEmail,
         "portfolioID" to userPortfolio.portfolioID,
         "purchaseAmount" to userPortfolio.purchaseAmount,
         "totalProfit" to userPortfolio.totalProfit
     )
-
-    db.collection("userPortfolios").document()
+    val sqliteDB = DatabaseHelper(context = context)
+    sqliteDB.insertUserPortfolios(userPortfolio)
+    db.collection("userPortfolios").document(userPortfolio.id)
         .set(value)
         .addOnSuccessListener {
             // Successfully added user to Firestore
@@ -97,14 +103,17 @@ public fun addUserPortfolio(userPortfolio: UserPortfolio) {
         }
 }
 
-public fun addNews(news: News) {
+public fun addNews(news: News, context: Context) {
+    val sqliteDB = DatabaseHelper(context = context)
     val value = hashMapOf(
+        "id" to news.id,
         "newsTitle" to news.newsTitle,
         "newsImageUrl" to news.newsImageUrl,
         "newsLinkUrl" to news.newsLinkUrl
     )
+    sqliteDB.insertNews(news)
 
-    db.collection("news").document()
+    db.collection("news").document(news.id)
         .set(value)
         .addOnSuccessListener {
             // Successfully added user to Firestore
@@ -115,17 +124,20 @@ public fun addNews(news: News) {
         }
 }
 
-suspend fun getNewsData(): List<News> {
+suspend fun getNewsData(context: Context): List<News> {
     val db = FirebaseFirestore.getInstance()
     val news = mutableListOf<News>()
-
+    val sqliteDB = DatabaseHelper(context = context)
     return try {
         val documents = db.collection("news").get().await()
         for (document in documents) {
+            val id = (document["id"] as? String).orEmpty()
             val newsLinkUrl = (document["newsLinkUrl"] as? String).orEmpty()
             val newsImageUrl = (document["newsImageUrl"] as? String).orEmpty()
             val newsTitle = (document["newsTitle"] as? String).orEmpty()
-            news.add(News(newsLinkUrl, newsTitle, newsImageUrl))
+            val tempNews = News(id, newsLinkUrl, newsTitle, newsImageUrl)
+            news.add(tempNews)
+            sqliteDB.insertNews(tempNews)
         }
         news
     } catch (e: Exception) {
@@ -134,10 +146,10 @@ suspend fun getNewsData(): List<News> {
     }
 }
 
-suspend fun getPortfoliosData(): List<Portfolio> {
+suspend fun getPortfoliosData(context: Context): List<Portfolio> {
     val db = FirebaseFirestore.getInstance()
     val portfolios = mutableListOf<Portfolio>()
-
+    val sqliteDB = DatabaseHelper(context = context)
     return try {
         val documents = db.collection("portfolios").get().await()
         for (document in documents) {
@@ -155,9 +167,9 @@ suspend fun getPortfoliosData(): List<Portfolio> {
             val dividendPayoutPeriod = (document["dividendPayoutPeriod"] as? Number)?.toInt() ?: 0
             val fundingTarget = (document["fundingTarget"] as? Number)?.toInt() ?: 0
             val grossProfit = (document["grossProfit"] as? Number)?.toInt() ?: 0
-
             val data = Portfolio(id, storeName, address, province, imageUrl, storeType, logoUrl ,fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
             portfolios.add(data)
+            sqliteDB.insertPortfolio(data)
         }
         portfolios
     } catch (e: Exception) {
@@ -166,17 +178,19 @@ suspend fun getPortfoliosData(): List<Portfolio> {
     }
 }
 
-suspend fun getAllUserPortfoliosData(): List<UserPortfolio> {
+suspend fun getAllUserPortfoliosData(context: Context): List<UserPortfolio> {
     val userPortfolios = mutableListOf<UserPortfolio>()
-
+    val sqliteDB = DatabaseHelper(context = context)
     return try {
         val documents = db.collection("userPortfolios").get().await()
         for (document in documents.documents) {
+            val id = (document["id"] as? String).orEmpty()
             val email = (document["email"] as? String).orEmpty()
             val portfolioID = (document["portfolioID"] as? String).orEmpty()
             val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
             val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
-            val data = UserPortfolio(email, portfolioID, purchaseAmount, totalProfit)
+            val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
+            sqliteDB.insertUserPortfolios(data)
             userPortfolios.add(data)
         }
         userPortfolios
@@ -186,28 +200,6 @@ suspend fun getAllUserPortfoliosData(): List<UserPortfolio> {
     }
 }
 
-suspend fun getAllPurchaseAmountOfPortfolio(portfolioID:String): PortfolioSummary {
-    val documents = db.collection("userPortfolios").get().await()
-    var total = 0
-    var count = 0
-    return try {
-        for (document in documents.documents) {
-            val id = document["portfolioID"] as? String
-            val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
-            if(id == portfolioID) {
-                total+=purchaseAmount
-                count++
-            }
-        }
-        PortfolioSummary(total,count)
-    } catch (e: Exception) {
-        println("Error getting documents: $e")
-        PortfolioSummary(0,0)
-    }
-}
-
-
-
 suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortfolio> {
     val userPortfolios = mutableListOf<UserPortfolio>()
 
@@ -216,10 +208,11 @@ suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortf
         for (document in documents.documents) {
             val email = (document["email"] as? String).orEmpty()
             if(email == currentEmail) {
+                val id = (document["id"] as? String).orEmpty()
                 val portfolioID = (document["portfolioID"] as? String).orEmpty()
                 val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
                 val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
-                val data = UserPortfolio(email, portfolioID, purchaseAmount, totalProfit)
+                val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
                 userPortfolios.add(data)
             }
         }
