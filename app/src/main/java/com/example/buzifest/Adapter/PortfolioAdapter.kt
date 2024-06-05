@@ -15,7 +15,9 @@ import com.bumptech.glide.Glide
 import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Helper.*
 import com.example.buzifest.R
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PortfolioAdapter(private val portfolioList: List<Portfolio>, context:Context,
                        private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
@@ -60,11 +62,17 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>, context:Conte
                     holder.portfolioRemaining.text = (currentItem.fundingTarget - portfolioData.totalInvested).toString() + "remaining"
                     holder.portfolioPercentage.text = result + "% gathered"
 
-                    holder.portfolioProgress.progress = result.toInt()
+                    withContext(Dispatchers.Main){
+                        holder.portfolioProgress.progress = ((amount.toDouble()/currentItem.fundingTarget.toDouble())*100).toInt()
+                    }
+
 
                 } else {
                     holder.portfolioPercentage.text = "Funding target is zero"
-                    holder.portfolioProgress.progress = 0
+
+                    withContext(Dispatchers.Main){
+                        holder.portfolioProgress.progress = 0
+                    }
                 }
 
                 holder.portfolioRemaining.text = (currentItem.fundingTarget - amount).toString() + " remaining"
