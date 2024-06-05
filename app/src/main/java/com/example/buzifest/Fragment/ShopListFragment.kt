@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.buzifest.Adapter.PortofolioPageAdapter
+import com.example.buzifest.Adapter.ShopAdapter
+import com.example.buzifest.Helper.DatabaseHelper
 import com.example.buzifest.R
+import com.example.buzifest.databinding.FragmentShopListBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,24 +23,18 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ShopListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val binding = FragmentShopListBinding.inflate(layoutInflater)
+        val sqliteDb = DatabaseHelper(requireContext())
+        val portfolioList = sqliteDb.selectAllPortfolios()
+        val shopAdapter = ShopAdapter(portfolioList, requireContext())
+        binding.shopRecycler.layoutManager = LinearLayoutManager(context)
+        binding.shopRecycler.adapter = shopAdapter
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop_list, container, false)
+        return binding.root
     }
 
     companion object {
