@@ -1,9 +1,12 @@
 package com.example.buzifest.Adapter
 
+import android.content.Context
+import android.provider.ContactsContract.Data
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -14,8 +17,10 @@ import com.example.buzifest.Helper.*
 import com.example.buzifest.R
 import kotlinx.coroutines.launch
 
-class PortfolioAdapter(private val portfolioList: List<Portfolio>,
+class PortfolioAdapter(private val portfolioList: List<Portfolio>, context:Context,
                        private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<PortfolioAdapter.ViewHolder>() {
+
+    val sqLite = DatabaseHelper(context)
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val portofolioLogo = itemView.findViewById<ImageView>(R.id.home_custom_horizontal_logo)
@@ -24,6 +29,7 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
         val portfolioRemaining = itemView.findViewById<TextView>(R.id.home_custom_horizontal_remaining)
         val portfolioGrossProfit = itemView.findViewById<TextView>(R.id.home_custom_horizontal_gross_profit)
         val portfolioSharesReleased = itemView.findViewById<TextView>(R.id.home_custom_horizontal_shares_released)
+        val portfolioProgress = itemView.findViewById<ProgressBar>(R.id.home_custom_progress_bar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,7 +47,8 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
         lifecycleOwner.lifecycleScope.launch {
             try {
                 // Fetch the portfolio amounts
-                val portfolioData = getAllPurchaseAmountOfPortfolio(portfolioID = currentItem.id)
+                val portfolioData = sqLite.selectPurchaseAmountOfPortfolio(currentItem.id)
+                println(portfolioData)
 
                 val amount = portfolioData.totalInvested // Amount of invested portfolio
                 val totalInvestor = portfolioData.totalInvestor // Amount of total investors in a portfolio
@@ -50,10 +57,14 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>,
                 // Ensure currentItem.fundingTarget is not zero to avoid division by zero
                 if (currentItem.fundingTarget != 0) {
                     val result = String.format("%.2f", (amount.toDouble() / currentItem.fundingTarget.toDouble()) * 100)
+                    holder.portfolioRemaining.text = (currentItem.fundingTarget - portfolioData.totalInvested).toString() + "remaining"
                     holder.portfolioPercentage.text = result + "% gathered"
+
+                    holder.portfolioProgress.progress = result.toInt()
 
                 } else {
                     holder.portfolioPercentage.text = "Funding target is zero"
+                    holder.portfolioProgress.progress = 0
                 }
 
                 holder.portfolioRemaining.text = (currentItem.fundingTarget - amount).toString() + " remaining"

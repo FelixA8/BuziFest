@@ -49,9 +49,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="165sp"
                 android:orientation="vertical"
-                android:background="@drawable/home_portfolio_value"
+                android:background="@drawable/home_top_portfolio_ui"
                 android:layout_marginHorizontal="20sp">
 
                 <TextView

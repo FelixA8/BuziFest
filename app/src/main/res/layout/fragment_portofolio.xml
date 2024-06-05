@@ -44,10 +44,11 @@
             android:id="@+id/portofolio_balance_linear"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="170sp"
+            android:layout_width="150sp"
             android:layout_height="90sp"
-            android:background="@color/blue"
+            android:background="@drawable/bg_rounded_gray"
             android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf = "@+id/portofolio_asset_linear"
             >
 
             <TextView
@@ -66,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textColor="@color/green"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
@@ -79,9 +80,10 @@
         <LinearLayout
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="170sp"
+            app:layout_constraintStart_toEndOf="@id/portofolio_balance_linear"
+            android:layout_width="150sp"
             android:layout_height="90sp"
-            android:background="@color/blue"
+            android:background="@drawable/bg_rounded_gray"
             android:orientation="vertical"
             android:id="@+id/portofolio_asset_linear"
             >
@@ -102,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textColor="@color/green"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
@@ -112,13 +114,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/portofolio_value_linear"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/portofolio_balance_linear"
             android:layout_marginTop="17sp"
-            android:layout_width="170sp"
+            android:layout_width="150sp"
             android:layout_height="90sp"
-            android:background="@color/blue"
+            android:background="@drawable/bg_rounded_gray"
             android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/portofolio_earnings_linear"
             >
 
             <TextView
@@ -137,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textColor="@color/green"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
@@ -147,19 +151,21 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/portofolio_earnings_linear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/portofolio_asset_linear"
             android:layout_marginTop="17sp"
-            android:layout_width="170sp"
+            android:layout_width="150sp"
             android:layout_height="90sp"
-            android:background="@color/blue"
+            android:background="@drawable/bg_rounded_gray"
             android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@id/portofolio_value_linear"
             >
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Portfolio Value"
+                android:text="Earnings"
                 android:fontFamily="@font/roboto_medium"
                 android:textSize="12sp"
                 android:textColor="@color/white"
@@ -172,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textColor="@color/green"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
@@ -181,6 +187,26 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/portofolio_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Porfolio List"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/portofolio_value_linear"
+            android:layout_marginTop="20sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/portofolio_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/portofolio_tv"
+            android:layout_marginTop="10sp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,12 +68,12 @@ class HomeFragment : Fragment() {
         if(portfolioList.isEmpty()) {
             lifecycleScope.launch {
                 val fetchedPortfolioList = getPortfoliosData(requireContext()) //CallPortfolioData and save it to sqlite.
-                portfolioAdapter = PortfolioAdapter(fetchedPortfolioList, viewLifecycleOwner)
+                portfolioAdapter = PortfolioAdapter(fetchedPortfolioList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
             }
         } else {
-            portfolioAdapter = PortfolioAdapter(portfolioList, viewLifecycleOwner)
+            portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
             portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             portfolioRecyclerView.adapter = portfolioAdapter
         }
@@ -100,7 +100,7 @@ class HomeFragment : Fragment() {
             //TODO
         }
 
-        sqliteDb.selectPurchaseAmountOfPortfolio("ab2bb03c-f8f4-4260-86ba-4ee4e39b1e5c")
+
 
         binding.homeMenuSettings.setOnClickListener {
             val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
@@ -110,15 +110,6 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
-        lifecycleScope.launch {
-//            val userPortfolioList = getAllUserPortfoliosData() //Call User Portfolio List
-//            val currentUserData = getCurrentUserValueData(currentEmail) //Call User Value
-//            val newsList = getNewsData(requireContext()) //Call news List
-//            val userPortfolio = getAllCurrentUserPortfoliosData(currentEmail)
-        }
-
-
-
         // Inflate the layout for this fragment
         return binding.root
     }
