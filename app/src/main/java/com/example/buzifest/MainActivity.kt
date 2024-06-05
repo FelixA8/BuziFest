@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         sharedpreferences = getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
         sqliteDb = DatabaseHelper(this)
+        sqliteDb.clearDatabase()
         val loggedEmail = sharedpreferences.getString(EMAIL_KEY, null)
         val loggedPassword = sharedpreferences.getString(PASSWORD_KEY, null)
         if(loggedEmail != null && loggedPassword != null) {

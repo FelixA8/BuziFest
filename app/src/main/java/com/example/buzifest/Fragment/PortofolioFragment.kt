@@ -5,7 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.buzifest.Adapter.HomeNewsAdapter
+import com.example.buzifest.Adapter.PortofolioPageAdapter
+import com.example.buzifest.Helper.DatabaseHelper
+import com.example.buzifest.Helper.currentBalance
+import com.example.buzifest.Helper.currentEmail
+import com.example.buzifest.Helper.formatNumber
 import com.example.buzifest.R
+import com.example.buzifest.databinding.FragmentPortofolioBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +42,25 @@ class PortofolioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sqliteDb = DatabaseHelper(requireContext())
+        val binding = FragmentPortofolioBinding.inflate(layoutInflater)
+        val summaryValue = sqliteDb.selectUserSummaryValue(currentEmail)
+        val balance = currentBalance
+        val asset = summaryValue.totalValue + balance + summaryValue.totalEarning
+        val userPortfolioList = sqliteDb.selectUserPortfolio(currentEmail)
+
+
+        val portfolioListAdapter = PortofolioPageAdapter(userPortfolioList)
+        binding.portofolioRecycler.layoutManager = LinearLayoutManager(context)
+        binding.portofolioRecycler.adapter = portfolioListAdapter
+
+        binding.portofolioPortfolioValue.text = "Rp. " + formatNumber(summaryValue.totalValue)
+        binding.portofolioEarnings.text = "Rp. " + formatNumber(summaryValue.totalEarning)
+        binding.portofolioAsset.text = "Rp. " + formatNumber(asset)
+        binding.portofolioBalance.text = "Rp. " + formatNumber(balance)
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_portofolio, container, false)
+        return binding.root
     }
 
     companion object {

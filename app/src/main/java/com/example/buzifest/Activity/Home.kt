@@ -23,7 +23,6 @@ class Home : AppCompatActivity() {
 
     lateinit var bottomNav : BottomNavigationView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)

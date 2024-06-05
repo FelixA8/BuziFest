@@ -50,8 +50,6 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>, context:Conte
             try {
                 // Fetch the portfolio amounts
                 val portfolioData = sqLite.selectPurchaseAmountOfPortfolio(currentItem.id)
-                println(portfolioData)
-
                 val amount = portfolioData.totalInvested // Amount of invested portfolio
                 val totalInvestor = portfolioData.totalInvestor // Amount of total investors in a portfolio
 

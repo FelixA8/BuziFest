@@ -200,6 +200,26 @@ suspend fun getAllUserPortfoliosData(context: Context): List<UserPortfolio> {
     }
 }
 
+suspend fun getAllPurchaseAmountOfPortfolio(portfolioID:String): PortfolioSummary {
+    val documents = db.collection("userPortfolios").get().await()
+    var total = 0
+    var count = 0
+    return try {
+        for (document in documents.documents) {
+            val id = document["portfolioID"] as? String
+            val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
+            if(id == portfolioID) {
+                total+=purchaseAmount
+                count++
+            }
+        }
+        PortfolioSummary(total,count)
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        PortfolioSummary(0,0)
+    }
+}
+
 suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortfolio> {
     val userPortfolios = mutableListOf<UserPortfolio>()
 
@@ -222,6 +242,52 @@ suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortf
         emptyList()
     }
 }
+
+suspend fun getUserPortfoliosPortofolio(currentEmail:String):List<Portfolio>{
+    val userPortfolios = mutableListOf<UserPortfolio>()
+    val portfolioList = mutableListOf<Portfolio>()
+    return try {
+        val documents = db.collection("userPortfolios").get().await()
+        for (document in documents.documents) {
+            val email = (document["email"] as? String).orEmpty()
+            if(email == currentEmail) {
+                val id = (document["id"] as? String).orEmpty()
+                val portfolioID = (document["portfolioID"] as? String).orEmpty()
+                val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
+                val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
+                val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
+                userPortfolios.add(data)
+            }
+        }
+        for(userPortfolio in userPortfolios) {
+            val docRef = db.collection("portfolios").document(userPortfolio.portfolioID)
+            val document = docRef.get().await()
+            if(document.exists()) {
+                val storeType = (document["storeType"] as? String).orEmpty()
+                val address = (document["address"] as? String).orEmpty()
+                val province = (document["province"] as? String).orEmpty()
+                val imageUrl = (document["imageUrl"] as? String).orEmpty()
+                val publisher = (document["publisher"] as? String).orEmpty()
+                val logoUrl = (document["logoUrl"] as? String).orEmpty()
+                val description = (document["description"] as? String).orEmpty()
+                val storeName = (document["storeName"] as? String).orEmpty()
+                val publicShareStock = (document["publicShareStock"] as? Double) ?: 0.0
+                val id = (document["id"] as? String).orEmpty()
+                val mainShareHolder = (document["mainShareHolder"] as? String).orEmpty()
+                val dividendPayoutPeriod = (document["dividendPayoutPeriod"] as? Number)?.toInt() ?: 0
+                val fundingTarget = (document["fundingTarget"] as? Number)?.toInt() ?: 0
+                val grossProfit = (document["grossProfit"] as? Number)?.toInt() ?: 0
+                val data = Portfolio(id, storeName, address, province, imageUrl, storeType, logoUrl ,fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
+                portfolioList.add(data)
+            }
+        }
+        portfolioList
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        emptyList()
+    }
+}
+
 suspend fun getCurrentUserValueData(currentEmail:String): ValueSummaryData {
     var totalValue = 0
     var totalEarning = 0

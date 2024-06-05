@@ -156,12 +156,86 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         println("totalInvested = ${totalInvested}")
         return PortfolioSummary(totalInvestor, totalInvested)
     }
+
+    fun selectUserSummaryValue(userEmail:String):ValueSummaryData{
+        val db = readableDatabase
+        var totalValue = 0
+        var totalResult = 0
+        val queryTotalValue = "SELECT SUM(purchaseAmount) AS totalValue from userPortfolios WHERE userEmail = ?"
+        val queryTotalResult = "SELECT SUM(totalProfit) AS totalValue from userPortfolios WHERE userEmail = ?"
+        val cursorValue = db.rawQuery(queryTotalValue, arrayOf(userEmail))
+        while (cursorValue.moveToNext()) {
+            totalValue = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalValue"))
+        }
+        val cursorResult = db.rawQuery(queryTotalResult, arrayOf(userEmail))
+        while (cursorResult.moveToNext()) {
+            totalResult = cursorResult.getInt(cursorResult.getColumnIndexOrThrow("totalValue"))
+        }
+
+        return ValueSummaryData(totalValue, totalResult)
+    }
+
+    fun selectUserPortfolio(email:String):ArrayList<UserPortfolio> {
+        val db = readableDatabase
+        val userPortfolioList:ArrayList<UserPortfolio> = ArrayList()
+        val query = "SELECT * from userPortfolios WHERE userEmail = ?"
+        val cursorValue = db.rawQuery(query, arrayOf(email))
+        while (cursorValue.moveToNext()) {
+            val id = cursorValue.getString(cursorValue.getColumnIndexOrThrow("id"))
+            val portfolioID = cursorValue.getString(cursorValue.getColumnIndexOrThrow("portfolioID"))
+            val userEmail = cursorValue.getString(cursorValue.getColumnIndexOrThrow("userEmail"))
+            val purchaseAmount = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("purchaseAmount"))
+            val totalProfit = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalProfit"))
+            userPortfolioList.add(UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit))
+        }
+        return userPortfolioList
+    }
+
+    fun selectUserPortfoliosPortofolio():ArrayList<Portfolio> {
+        val userPortfolioList = selectUserPortfolio(currentEmail)
+        println(userPortfolioList)
+        val portfolioList:ArrayList<Portfolio> = arrayListOf()
+        for(userPortfolio in userPortfolioList) {
+            println(userPortfolio)
+            val portfolio = selectSpecificPortfolio(userPortfolio.portfolioID)
+            portfolioList.add(portfolio)
+        }
+        return portfolioList
+    }
+
+    fun selectSpecificPortfolio(portfolioID: String):Portfolio {
+        val db = readableDatabase
+        val query = "SELECT * from portfolios WHERE id = ?"
+        lateinit var tempPortfolio: Portfolio
+        val cursor = db.rawQuery(query, arrayOf(portfolioID))
+        while (cursor.moveToNext()) {
+            val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
+            val storeName = cursor.getString(cursor.getColumnIndexOrThrow("storeName"))
+            val address = cursor.getString(cursor.getColumnIndexOrThrow("address"))
+            val province = cursor.getString(cursor.getColumnIndexOrThrow("province"))
+            val image = cursor.getString(cursor.getColumnIndexOrThrow("image"))
+            val logo = cursor.getString(cursor.getColumnIndexOrThrow("logo"))
+            val storeType = cursor.getString(cursor.getColumnIndexOrThrow("storeType"))
+            val fundingTarget = cursor.getInt(cursor.getColumnIndexOrThrow("fundingTarget"))
+            val description = cursor.getString(cursor.getColumnIndexOrThrow("description"))
+            val publicShareStock = cursor.getDouble(cursor.getColumnIndexOrThrow("publicShareStock"))
+            val dividendPayoutPeriod = cursor.getInt(cursor.getColumnIndexOrThrow("dividendPayoutPeriod"))
+            val mainShareHolder = cursor.getString(cursor.getColumnIndexOrThrow("mainShareHolder"))
+            val publisher = cursor.getString(cursor.getColumnIndexOrThrow("publisher"))
+            val grossProfit = cursor.getInt(cursor.getColumnIndexOrThrow("grossProfit"))
+            tempPortfolio = Portfolio(id, storeName, address, province, image, storeType, logo, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
+        }
+        return tempPortfolio
+    }
+
     fun clearDatabase() {
         val db = writableDatabase
         // Clear the database
         db.execSQL("DELETE FROM portfolios")
         db.execSQL("DELETE FROM userPortfolios")
         db.execSQL("DELETE FROM news")
+
+        println("deleted!!")
         // Close the database connection
         db.close()
     }

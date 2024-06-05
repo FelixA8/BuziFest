@@ -59,29 +59,22 @@ class HomeFragment : Fragment() {
         portfolioEarnings = binding.homeEarnings
 
         val portfolioList = sqliteDb.selectAllPortfolios()
-        val newsList = sqliteDb.selectAllNews()
-        val userPortfolioList = sqliteDb.selectAllUserPortfolios()
-        println("dbPortfolio: ${portfolioList}")
-        println("newsList: ${newsList}")
-        println("userPortfolioList = ${userPortfolioList}")
+        var newsList = sqliteDb.selectAllNews()
+        val allUserPortfolioList = sqliteDb.selectAllUserPortfolios()
+        val userPortfolioList = sqliteDb.selectUserPortfoliosPortofolio()
+        val summaryValue = sqliteDb.selectUserSummaryValue(currentEmail)
 
         if(portfolioList.isEmpty()) {
             lifecycleScope.launch {
-                val fetchedPortfolioList = getPortfoliosData(requireContext()) //CallPortfolioData and save it to sqlite.
-                portfolioAdapter = PortfolioAdapter(fetchedPortfolioList, requireContext(), viewLifecycleOwner)
-                portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                portfolioRecyclerView.adapter = portfolioAdapter
+                getPortfoliosData(requireContext()) //CallPortfolioData and save it to sqlite.
             }
-        } else {
-            portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
-            portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            portfolioRecyclerView.adapter = portfolioAdapter
         }
 
         if(newsList.isEmpty()) {
             lifecycleScope.launch {
-                val fetchedNewsList = getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
-                homeNewsAdapter = HomeNewsAdapter(fetchedNewsList)
+                getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
+                newsList = sqliteDb.selectAllNews()
+                homeNewsAdapter = HomeNewsAdapter(newsList)
                 newsRecyclerView.layoutManager = LinearLayoutManager(context)
                 newsRecyclerView.adapter = homeNewsAdapter
             }
@@ -91,14 +84,43 @@ class HomeFragment : Fragment() {
             newsRecyclerView.adapter = homeNewsAdapter
         }
 
+        if(allUserPortfolioList.isEmpty()) {
+            lifecycleScope.launch {
+                getAllUserPortfoliosData(requireContext())
+            }
+        }
+
         if(userPortfolioList.isEmpty()) {
             lifecycleScope.launch {
-                val fetchedNewsList = getAllUserPortfoliosData(requireContext())
-                //TODO
+                val portfolioList = getUserPortfoliosPortofolio(currentEmail)
+                println("ldfajs: ${portfolioList}")
+                portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
+                portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                portfolioRecyclerView.adapter = portfolioAdapter
             }
         } else {
-            //TODO
+            portfolioAdapter = PortfolioAdapter(userPortfolioList, requireContext(), viewLifecycleOwner)
+            portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            portfolioRecyclerView.adapter = portfolioAdapter
         }
+
+        if(summaryValue.totalValue == 0 && summaryValue.totalEarning == 0) {
+            lifecycleScope.launch {
+                val tempValue = getCurrentUserValueData(currentEmail)
+                binding.homePortfolioValue.text = "Rp. ${formatNumber(tempValue.totalValue)}"
+                binding.homeEarnings.text = "Rp. ${formatNumber(tempValue.totalEarning)}"
+            }
+        } else {
+            binding.homePortfolioValue.text = "Rp. ${formatNumber(summaryValue.totalValue)}"
+            binding.homeEarnings.text = "Rp. ${formatNumber(summaryValue.totalEarning)}"
+        }
+
+
+        println("dbPortfolio: ${portfolioList}")
+        println("newsList: ${newsList}")
+        println("hi")
+//        println("userPortfolioList = ${userPortfolioList}")
+
 
 
 

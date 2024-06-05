@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Data.UserPortfolio
 import com.example.buzifest.R
 import org.w3c.dom.Text
 
-class PortofolioPageAdapter(private val UserPortofolioList: List<UserPortfolio>): RecyclerView.Adapter<PortofolioPageAdapter.ViewHolder>() {
+class PortofolioPageAdapter(private val userPortofolioList: List<UserPortfolio>): RecyclerView.Adapter<PortofolioPageAdapter.ViewHolder>() {
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val portofolioPoint = itemView.findViewById<ImageView>(R.id.portofolio_recyler_point)
         val portofolioPercentage = itemView.findViewById<TextView>(R.id.portofolio_recyler_percentage)
@@ -26,12 +27,11 @@ class PortofolioPageAdapter(private val UserPortofolioList: List<UserPortfolio>)
     }
 
     override fun getItemCount(): Int {
-        return UserPortofolioList.size
+        return userPortofolioList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val currentItem = userPortofolioList[position]
+        holder.portfolioEarnings.text = "0"
     }
-
-
 }
