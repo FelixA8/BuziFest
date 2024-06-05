@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.buzifest.Activity.Home
 import com.example.buzifest.Activity.Register
+import com.example.buzifest.Helper.DatabaseHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var sqliteDb: DatabaseHelper
     private lateinit var loginEmail: EditText
     private lateinit var loginPassword: EditText
     private lateinit var loginButton: Button
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         sharedpreferences = getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+        sqliteDb = DatabaseHelper(this)
         val loggedEmail = sharedpreferences.getString(EMAIL_KEY, null)
         val loggedPassword = sharedpreferences.getString(PASSWORD_KEY, null)
         if(loggedEmail != null && loggedPassword != null) {
@@ -91,6 +94,11 @@ class MainActivity : AppCompatActivity() {
                     }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sqliteDb.clearDatabase()
     }
 
 }

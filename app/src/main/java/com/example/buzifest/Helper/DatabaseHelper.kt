@@ -156,4 +156,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         println("totalInvested = ${totalInvested}")
         return PortfolioSummary(totalInvestor, totalInvested)
     }
+    fun clearDatabase() {
+        val db = writableDatabase
+        // Clear the database
+        db.execSQL("DELETE FROM portfolios")
+        db.execSQL("DELETE FROM userPortfolios")
+        db.execSQL("DELETE FROM news")
+        // Close the database connection
+        db.close()
+    }
 }
