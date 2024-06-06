@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.ShopListFragment"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shop_header"
@@ -28,7 +29,7 @@
         <ImageView
             android:layout_width="100sp"
             android:layout_height="80sp"
-            android:src="@drawable/logo_dark"
+            android:src="@drawable/logo_white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
