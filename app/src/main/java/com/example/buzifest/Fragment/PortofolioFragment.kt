@@ -47,6 +47,7 @@ class PortofolioFragment : Fragment() {
         val summaryValue = sqliteDb.selectUserSummaryValue(currentEmail)
         val balance = currentBalance
         val asset = summaryValue.totalValue + balance + summaryValue.totalEarning
+
         val userPortfolioList = sqliteDb.selectUserPortfolio(currentEmail)
 
         val portfolioListAdapter = PortofolioPageAdapter(userPortfolioList, requireContext())

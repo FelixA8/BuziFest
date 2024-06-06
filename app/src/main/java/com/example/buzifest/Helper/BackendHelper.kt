@@ -191,6 +191,7 @@ suspend fun getAllUserPortfoliosData(context: Context): List<UserPortfolio> {
             val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
             val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
             sqliteDB.insertUserPortfolios(data)
+
             userPortfolios.add(data)
         }
         userPortfolios

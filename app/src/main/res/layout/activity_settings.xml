@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SettingsActivity">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settings_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/settingsBackIV"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/detail_back_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <ImageView
+                android:layout_width="100sp"
+                android:layout_height="80sp"
+                android:src="@drawable/logo_dark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="#33404F"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:fontFamily="@font/roboto_bold"
+            app:layout_constraintTop_toBottomOf="@id/settings_constraint"/>
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/settings_title"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/settings_cp_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp"
+                android:text="Change Password"
+                android:textColor="#33404F"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_tegular"/>
+            <ImageView
+                android:id="@+id/settingsCPIV"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/detail_back_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:rotation="180"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#4D4D4D" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsChangePhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/settings_cpn_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp"
+                android:text="Change Phone Number"
+                android:textColor="#33404F"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_tegular"/>
+            <ImageView
+                android:id="@+id/settingsCPNIV"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/detail_back_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:rotation="180"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#4D4D4D" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsChangeLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/settings_cl_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp"
+                android:text="Change Language"
+                android:textColor="#33404F"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_tegular"/>
+            <ImageView
+                android:id="@+id/settingsCLIV"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/detail_back_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:rotation="180"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#4D4D4D" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsLogOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/settings_lo_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp"
+                android:text="Log Out"
+                android:textColor="#33404F"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_tegular"/>
+            <ImageView
+                android:id="@+id/settingsLOIV"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/detail_back_button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:rotation="180"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#4D4D4D" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

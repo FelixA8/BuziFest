@@ -204,10 +204,14 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     fun selectSpecificPortfolio(portfolioID: String):Portfolio {
+        println("id: ${portfolioID}")
         val db = readableDatabase
         val query = "SELECT * from portfolios WHERE id = ?"
+        val query1 = "SELECT * from portfolios"
         lateinit var tempPortfolio: Portfolio
         val cursor = db.rawQuery(query, arrayOf(portfolioID))
+        val cursor1 = db.rawQuery(query1, null)
+
         while (cursor.moveToNext()) {
             val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
             val storeName = cursor.getString(cursor.getColumnIndexOrThrow("storeName"))
@@ -234,7 +238,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DELETE FROM portfolios")
         db.execSQL("DELETE FROM userPortfolios")
         db.execSQL("DELETE FROM news")
-
         println("deleted!!")
         // Close the database connection
         db.close()

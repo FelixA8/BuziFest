@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.provider.ContactsContract.Data
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +13,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.buzifest.Activity.PortfolioDetail
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortfolioAdapter
 import com.example.buzifest.Data.*
@@ -33,7 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var portfolioValue: TextView
     private lateinit var portfolioEarnings: TextView
     private lateinit var sqliteDb: DatabaseHelper
-    private lateinit var trending: LinearLayout
+    private lateinit var refreshHome: SwipeRefreshLayout
 
     // news recyler
     private lateinit var newsRecyclerView:RecyclerView
@@ -48,6 +50,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+
         sqliteDb = DatabaseHelper(requireContext())
 
         binding = FragmentHomeBinding.inflate(inflater)
@@ -56,18 +59,39 @@ class HomeFragment : Fragment() {
         newsRecyclerView = binding.homeRecyclerViewNews
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
+        refreshHome = binding.refreshHome
+
 
         newsRecyclerView = binding.homeRecyclerViewNews
 
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
 
+        refreshHome.isEnabled = false
 
-        trending = binding.homeMenuTrending
-
-        trending.setOnClickListener{
-            val intent = Intent(context, PortfolioDetail::class.java)
-            startActivity(intent)
+        binding.svHome.setOnScrollChangeListener { v: View, _, scrollY, _, _ ->
+            refreshHome.isEnabled = false
+            if(scrollY == 0) {
+                refreshHome.isEnabled = true
+                lifecycleScope.launch {
+                    sqliteDb.clearDatabase()
+                    getPortfoliosData(requireContext())
+                    getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
+                    val newsList = sqliteDb.selectAllNews()
+                    homeNewsAdapter = HomeNewsAdapter(newsList)
+                    newsRecyclerView.layoutManager = LinearLayoutManager(context)
+                    newsRecyclerView.adapter = homeNewsAdapter
+                    getAllUserPortfoliosData(requireContext())
+                    val portfolioList = getUserPortfoliosPortofolio(currentEmail)
+                    portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
+                    portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    portfolioRecyclerView.adapter = portfolioAdapter
+                    val tempValue = getCurrentUserValueData(currentEmail)
+                    binding.homePortfolioValue.text = "Rp. ${formatNumber(tempValue.totalValue)}"
+                    binding.homeEarnings.text = "Rp. ${formatNumber(tempValue.totalEarning)}"
+                    refreshHome.isRefreshing = false
+                }
+            }
         }
 
         val portfolioList = sqliteDb.selectAllPortfolios()
@@ -105,7 +129,6 @@ class HomeFragment : Fragment() {
         if(userPortfolioList.isEmpty()) {
             lifecycleScope.launch {
                 val portfolioList = getUserPortfoliosPortofolio(currentEmail)
-                println("ldfajs: ${portfolioList}")
                 portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
@@ -126,11 +149,6 @@ class HomeFragment : Fragment() {
             binding.homePortfolioValue.text = "Rp. ${formatNumber(summaryValue.totalValue)}"
             binding.homeEarnings.text = "Rp. ${formatNumber(summaryValue.totalEarning)}"
         }
-
-
-        println("dbPortfolio: ${portfolioList}")
-        println("newsList: ${newsList}")
-        println("hi")
 //        println("userPortfolioList = ${userPortfolioList}")
 
 
