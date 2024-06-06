@@ -18,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.LinearLayoutManager
 
 class Home : AppCompatActivity() {
 
@@ -114,3 +115,6 @@ class Home : AppCompatActivity() {
         transaction.commit()
     }
 }
+
+
+

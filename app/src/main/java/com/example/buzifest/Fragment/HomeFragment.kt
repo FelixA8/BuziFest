@@ -82,7 +82,8 @@ class HomeFragment : Fragment() {
                 getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
                 val newsList = sqliteDb.selectAllNews()
                 homeNewsAdapter = HomeNewsAdapter(newsList)
-                newsRecyclerView.layoutManager = LinearLayoutManager(context)
+                val nonScrollableLayoutManager = NonScrollableLayoutManager(requireContext())
+                newsRecyclerView.layoutManager = nonScrollableLayoutManager
                 newsRecyclerView.adapter = homeNewsAdapter
                 getAllUserPortfoliosData(requireContext())
                 val portfolioList = getUserPortfoliosPortofolio(currentEmail)
@@ -120,12 +121,14 @@ class HomeFragment : Fragment() {
                 getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
                 newsList = sqliteDb.selectAllNews()
                 homeNewsAdapter = HomeNewsAdapter(newsList)
-                newsRecyclerView.layoutManager = LinearLayoutManager(context)
+                val nonScrollableLayoutManager = NonScrollableLayoutManager(requireContext())
+                newsRecyclerView.layoutManager = nonScrollableLayoutManager
                 newsRecyclerView.adapter = homeNewsAdapter
             }
         } else {
             homeNewsAdapter = HomeNewsAdapter(newsList)
-            newsRecyclerView.layoutManager = LinearLayoutManager(context)
+            val nonScrollableLayoutManager = NonScrollableLayoutManager(requireContext())
+            newsRecyclerView.layoutManager = nonScrollableLayoutManager
             newsRecyclerView.adapter = homeNewsAdapter
         }
 
@@ -173,5 +176,15 @@ class HomeFragment : Fragment() {
         }
         // Inflate the layout for this fragment
         return binding.root
+    }
+}
+
+class NonScrollableLayoutManager(context: Context) : LinearLayoutManager(context) {
+    override fun canScrollVertically(): Boolean {
+        return false // Disable vertical scrolling
+    }
+
+    override fun canScrollHorizontally(): Boolean {
+        return false // Disable horizontal scrolling if needed
     }
 }

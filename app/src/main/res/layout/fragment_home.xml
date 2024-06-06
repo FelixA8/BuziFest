@@ -262,11 +262,11 @@
                         android:id="@+id/home_recyclerView_news"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none"
                         android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toBottomOf="@id/home_tv_recentNews"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginBottom="30sp"
                         android:layout_marginTop="15sp"
                         android:layout_marginHorizontal="20sp"/>
 
