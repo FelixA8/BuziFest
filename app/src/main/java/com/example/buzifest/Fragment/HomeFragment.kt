@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.buzifest.Activity.PortfolioDetail
 import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortfolioAdapter
 import com.example.buzifest.Data.*
@@ -30,6 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var portfolioValue: TextView
     private lateinit var portfolioEarnings: TextView
     private lateinit var sqliteDb: DatabaseHelper
+    private lateinit var trending: LinearLayout
 
     // news recyler
     private lateinit var newsRecyclerView:RecyclerView
@@ -57,6 +61,14 @@ class HomeFragment : Fragment() {
 
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
+
+
+        trending = binding.homeMenuTrending
+
+        trending.setOnClickListener{
+            val intent = Intent(context, PortfolioDetail::class.java)
+            startActivity(intent)
+        }
 
         val portfolioList = sqliteDb.selectAllPortfolios()
         var newsList = sqliteDb.selectAllNews()

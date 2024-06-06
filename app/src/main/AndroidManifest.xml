@@ -14,7 +14,7 @@
         android:theme="@style/Theme.BuziFest"
         tools:targetApi="31">
         <activity
-            android:name=".PortfolioDetail"
+            android:name=".Activity.PortfolioDetail"
             android:exported="false" />
         <activity
             android:name=".Activity.Biodata"
