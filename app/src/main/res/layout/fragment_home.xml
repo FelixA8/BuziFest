@@ -41,7 +41,7 @@
         <ScrollView
             android:id="@+id/svHome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/profileImageView"
             android:layout_marginTop="75sp">
 
@@ -261,15 +261,16 @@
                         android:background="@drawable/home_bottom_recycler"
                         android:id="@+id/home_recyclerView_news"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="1370dp"
+                        tools:listitem="@layout/home_custom_news_recycler"
                         android:overScrollMode="never"
                         android:nestedScrollingEnabled="false"
+                        android:scrollbars="none"
+                        app:flow_verticalGap="10dp"
                         app:layout_constraintTop_toBottomOf="@id/home_tv_recentNews"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginBottom="30sp"
                         android:layout_marginTop="15sp"
                         android:layout_marginHorizontal="20sp"/>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

@@ -260,6 +260,7 @@ suspend fun getUserPortfoliosPortofolio(currentEmail:String):List<Portfolio>{
                 userPortfolios.add(data)
             }
         }
+        println(userPortfolios)
         for(userPortfolio in userPortfolios) {
             val docRef = db.collection("portfolios").document(userPortfolio.portfolioID)
             val document = docRef.get().await()
@@ -303,6 +304,7 @@ suspend fun getCurrentUserValueData(currentEmail:String): ValueSummaryData {
                 totalEarning+=totalProfit
             }
         }
+        println("value: ${totalValue} ${totalEarning}")
         ValueSummaryData(totalValue, totalEarning)
     } catch (e: Exception) {
         println("Error getting documents: $e")

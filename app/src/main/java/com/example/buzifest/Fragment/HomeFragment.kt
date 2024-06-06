@@ -62,15 +62,13 @@ class HomeFragment : Fragment() {
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
         refreshHome = binding.refreshHome
-
-
         newsRecyclerView = binding.homeRecyclerViewNews
 
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
 
         refreshHome.isEnabled = false
-
+        newsRecyclerView.isNestedScrollingEnabled = false
         binding.svHome.setOnScrollChangeListener { v: View, _, scrollY, _, _ ->
             refreshHome.isEnabled = (scrollY == 0)
         }
@@ -82,8 +80,7 @@ class HomeFragment : Fragment() {
                 getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
                 val newsList = sqliteDb.selectAllNews()
                 homeNewsAdapter = HomeNewsAdapter(newsList)
-                val nonScrollableLayoutManager = NonScrollableLayoutManager(requireContext())
-                newsRecyclerView.layoutManager = nonScrollableLayoutManager
+                newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                 newsRecyclerView.adapter = homeNewsAdapter
                 getAllUserPortfoliosData(requireContext())
                 val portfolioList = getUserPortfoliosPortofolio(currentEmail)
@@ -121,14 +118,12 @@ class HomeFragment : Fragment() {
                 getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
                 newsList = sqliteDb.selectAllNews()
                 homeNewsAdapter = HomeNewsAdapter(newsList)
-                val nonScrollableLayoutManager = NonScrollableLayoutManager(requireContext())
-                newsRecyclerView.layoutManager = nonScrollableLayoutManager
+                newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                 newsRecyclerView.adapter = homeNewsAdapter
             }
         } else {
             homeNewsAdapter = HomeNewsAdapter(newsList)
-            val nonScrollableLayoutManager = NonScrollableLayoutManager(requireContext())
-            newsRecyclerView.layoutManager = nonScrollableLayoutManager
+            newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             newsRecyclerView.adapter = homeNewsAdapter
         }
 

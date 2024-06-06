@@ -9,7 +9,7 @@ data class News(
 
 val DUMMY_NEWSDATA = News(
     generateUUID(),
-    "https://asset.kompas.com/crops/IvP4MHLM1rHQi6KxQB7puhnu3iA=/0x0:1280x853/750x500/data/photo/2022/07/15/62d1817377bb8.jpeg",
-    "Jadi Tempat Berdayakan UMKM, Fasilitas Itu Bernama Rest Area",
-    "https://www.kompas.com/properti/read/2023/04/25/200000321/jadi-tempat-berdayakan-umkm-fasilitas-itu-bernama-rest-area?page=all"
+    "https://www.pajak.com/komunitas/opini-pajak/serba-serbi-pajak-umkm-yang-perlu-diketahui/",
+    "Serba-Serbi Pajak UMKM yang Perlu Diketahui",
+    "https://www.pajak.com/storage/2022/09/UMKM-1024x641.png"
 )
