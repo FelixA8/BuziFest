@@ -21,7 +21,10 @@ import com.google.android.gms.tasks.Task
 
 class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var myMap: GoogleMap
-    private lateinit var currLocation: Location
+    private var currLocation: Location = Location("").apply {
+        longitude = 106.78113
+        latitude = -6.20201
+    }
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +46,7 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         task.addOnSuccessListener { location: Location? ->
             if(location != null) {
                 currLocation = location
-            } else {
-                currLocation.longitude = 106.78113
-                currLocation.latitude = -6.20201
-            }
+            } 
             var mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.detail_maps) as SupportMapFragment
             mapFragment.getMapAsync(this)
         }

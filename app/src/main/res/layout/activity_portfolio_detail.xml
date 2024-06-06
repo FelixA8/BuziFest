@@ -430,16 +430,31 @@
                     android:fontFamily="@font/roboto_tegular"
                     android:textSize="15sp"
                     android:layout_marginHorizontal="20sp"
-                    android:textColor="@color/white"/>
-                <fragment
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
+                    android:textColor="@color/white"
+                    android:text="Jl. Cempaka Putih, Jakarta Selatan no 253"/>
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:id="@+id/detail_maps"
-                    tools:context=".MapsActivity"
-                    android:name="com.google.android.gms.maps.SupportMapFragment" />
+                    android:layout_height="350dp"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_marginTop="20sp"
+                    android:background="@drawable/detail_rounded_maps">
+
+                    <fragment
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/detail_maps"
+                        tools:context=".MapsActivity"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        />
+
+                </FrameLayout>
+
+
+
+
             </LinearLayout>
         </ScrollView>
 
