@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buzifest.Adapter.PortofolioPageAdapter
 import com.example.buzifest.Adapter.ShopAdapter
@@ -31,7 +32,8 @@ class ShopListFragment : Fragment() {
         val sqliteDb = DatabaseHelper(requireContext())
         val portfolioList = sqliteDb.selectAllPortfolios()
         val shopAdapter = ShopAdapter(portfolioList, requireContext())
-        binding.shopRecycler.layoutManager = LinearLayoutManager(context)
+        val gridLayoutManager = GridLayoutManager(context, 2)
+        binding.shopRecycler.layoutManager = gridLayoutManager
         binding.shopRecycler.adapter = shopAdapter
         // Inflate the layout for this fragment
         return binding.root

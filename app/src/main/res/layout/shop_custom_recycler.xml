@@ -4,7 +4,8 @@
     android:layout_height="230sp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/blue"
-    app:cardCornerRadius="20sp">
+    app:cardCornerRadius="20sp"
+    android:layout_marginBottom="15sp">
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/shop_recycler_poster"
             android:layout_alignParentTop="true"
+            android:background="@drawable/bg_rounded_shop"
             />
 
         <ImageView
