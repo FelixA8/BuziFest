@@ -18,6 +18,9 @@
         android:theme="@style/Theme.BuziFest"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.NewsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.BuyConfirmationActivity"
             android:exported="false" />
         <activity

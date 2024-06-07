@@ -13,8 +13,6 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:layout_marginHorizontal="2sp"
-            android:layout_marginTop="2sp"
             android:id="@+id/shop_recycler_image"
             android:layout_width="match_parent"
             android:layout_height="100dp"

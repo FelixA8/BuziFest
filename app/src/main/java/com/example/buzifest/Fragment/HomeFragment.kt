@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.buzifest.Activity.NewsActivity
 import com.example.buzifest.Activity.PortfolioDetail
 import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortfolioAdapter
@@ -38,6 +39,7 @@ class HomeFragment : Fragment() {
     private lateinit var sqliteDb: DatabaseHelper
     private lateinit var refreshHome: SwipeRefreshLayout
     private lateinit var trending: LinearLayout
+    private lateinit var newsMenu: LinearLayout
 
     // news recyler
     private lateinit var newsRecyclerView:RecyclerView
@@ -67,6 +69,9 @@ class HomeFragment : Fragment() {
         portfolioValue = binding.homePortfolioValue
         portfolioEarnings = binding.homeEarnings
 
+        trending = binding.homeMenuTrending
+        newsMenu = binding.homeMenuNews
+
         refreshHome.isEnabled = false
         newsRecyclerView.isNestedScrollingEnabled = false
         binding.svHome.setOnScrollChangeListener { v: View, _, scrollY, _, _ ->
@@ -94,10 +99,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        trending = binding.homeMenuTrending
+
+
 
         trending.setOnClickListener{
             val intent = Intent(context, PortfolioDetail::class.java)
+            startActivity(intent)
+        }
+
+        newsMenu.setOnClickListener {
+            val intent = Intent(context, NewsActivity::class.java)
             startActivity(intent)
         }
 
