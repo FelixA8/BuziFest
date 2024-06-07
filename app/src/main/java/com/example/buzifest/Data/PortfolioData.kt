@@ -1,5 +1,6 @@
 package com.example.buzifest.Data
 
+import android.os.Parcelable
 import java.util.*
 
 data class Portfolio(
