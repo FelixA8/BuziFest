@@ -444,7 +444,6 @@
         </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/detail_buy_button"
         android:layout_width="match_parent"
         android:layout_height="60sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -453,6 +452,7 @@
         android:background="@color/blue">
 
         <TextView
+            android:id="@+id/detail_buy_button"
             android:layout_width="250sp"
             android:layout_height="40sp"
             android:text="Buy Shares"

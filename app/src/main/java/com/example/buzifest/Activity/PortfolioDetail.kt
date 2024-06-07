@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +30,10 @@ import kotlinx.coroutines.withContext
 
 class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var myMap: GoogleMap
-    private lateinit var currLocation: Location
+    private var currLocation: Location = Location("").apply {
+        longitude = 106.78113
+        latitude = -6.20201
+    }
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +86,10 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
 
         //Set BuyButton
         binding.detailBuyButton.setOnClickListener {
-
+            val intent = Intent(this, BuyActivity::class.java).apply {
+                putExtra("portfolioID", portfolioID)
+            }
+            startActivity(intent)
         }
     }
 
@@ -103,9 +110,6 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         task.addOnSuccessListener { location: Location? ->
             if(location != null) {
                 currLocation = location
-            } else {
-                currLocation.longitude = 106.78113
-                currLocation.latitude = -6.20201
             }
             var mapFragment: SupportMapFragment = supportFragmentManager.findFragmentById(R.id.detail_maps) as SupportMapFragment
             mapFragment.getMapAsync(this)

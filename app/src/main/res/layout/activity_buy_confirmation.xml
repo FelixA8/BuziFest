@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.BuyConfirmationActivity"
+    android:background="@color/blue">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detail_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/buy_back_button"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:src="@drawable/detail_back_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:layout_width="100sp"
+            android:layout_height="80sp"
+            android:src="@drawable/logo_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buy_tvBuyShares"
+        android:text="Confirmation"
+        android:fontFamily="@font/roboto_tegular"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_constraint"
+        android:layout_marginHorizontal="20sp"/>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_store_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="40sp"
+        app:layout_constraintTop_toBottomOf="@id/buy_tvBuyShares">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Store Name"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confimation_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_store_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_linear_store_name">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Store Type"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confirmation_store_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_store_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_linear_store_type">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Store Address"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confirmation_store_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_funding_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_linear_store_address">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Funding Target"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confirmation_funding_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_dividend_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_linear_funding_target">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Dividend Payout Period"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confirmation_dividend_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_purchase_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="30sp"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_linear_dividend_period">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Purchase Amount"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confirmation_purchase_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmation_linear_ownership_percentage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_linear_purchase_amount">
+
+        <TextView
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Ownership Percentage"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/confirmation_ownership_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp 470.000"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginLeft="10sp"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/confirmation_button"
+        android:layout_width="match_parent"
+        android:layout_height="45sp"
+        android:background="@drawable/bg_rounded_green"
+        android:text="Confirm"
+        android:textColor="@color/blue"
+        android:textSize="20sp"
+        android:fontFamily="@font/roboto_medium"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginBottom="20sp"
+        android:paddingTop="8sp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
