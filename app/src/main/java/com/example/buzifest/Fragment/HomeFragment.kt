@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.buzifest.Activity.Home
 import com.example.buzifest.Activity.NewsActivity
 import com.example.buzifest.Activity.PortfolioDetail
 import com.example.buzifest.Activity.SettingsActivity
@@ -37,29 +38,26 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var portfolioValue: TextView
     private lateinit var portfolioEarnings: TextView
-    private lateinit var sqliteDb: DatabaseHelper
     private lateinit var refreshHome: SwipeRefreshLayout
     private lateinit var trending: LinearLayout
     private lateinit var newsMenu: LinearLayout
-
     // news recyler
     private lateinit var newsRecyclerView:RecyclerView
     private lateinit var homeNewsAdapter: HomeNewsAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-        sqliteDb = DatabaseHelper(requireContext())
-
+        val sharedPreferences = requireContext().getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+        val email = sharedPreferences.getString(MainActivity.EMAIL_KEY, null)
         binding = FragmentHomeBinding.inflate(inflater)
-
+        val sqliteDb = DatabaseHelper(requireContext())
         portfolioRecyclerView = binding.homePortfolioRecycler
         newsRecyclerView = binding.homeRecyclerViewNews
         portfolioValue = binding.homePortfolioValue
@@ -89,16 +87,17 @@ class HomeFragment : Fragment() {
                 newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                 newsRecyclerView.adapter = homeNewsAdapter
                 getAllUserPortfoliosData(requireContext())
-                val portfolioList = getUserPortfoliosPortofolio(currentEmail)
+                val portfolioList = getUserPortfoliosPortofolio()
                 portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
-                val tempValue = getCurrentUserValueData(currentEmail)
+                val tempValue = getCurrentUserValueData(email!!)
                 binding.homePortfolioValue.text = "Rp. ${formatNumber(tempValue.totalValue)}"
                 binding.homeEarnings.text = "Rp. ${formatNumber(tempValue.totalEarning)}"
                 refreshHome.isRefreshing = false
             }
         }
+
         trending.setOnClickListener{
             val intent = Intent(context, PortfolioDetail::class.java)
             startActivity(intent)
@@ -109,11 +108,11 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        val portfolioList = sqliteDb.selectAllPortfolios()
+        var portfolioList = sqliteDb.selectAllPortfolios()
         var newsList = sqliteDb.selectAllNews()
         val allUserPortfolioList = sqliteDb.selectAllUserPortfolios()
-        val userPortfolioList = sqliteDb.selectUserPortfoliosPortofolio()
-        val summaryValue = sqliteDb.selectUserSummaryValue(currentEmail)
+        val userPortfolioList = sqliteDb.selectUserPortfoliosPortofolio(email!!)
+        var summaryValue = sqliteDb.selectUserSummaryValue(email!!)
 
         if(portfolioList.isEmpty()) {
             lifecycleScope.launch {
@@ -143,8 +142,8 @@ class HomeFragment : Fragment() {
 
         if(userPortfolioList.isEmpty()) {
             lifecycleScope.launch {
-                val portfolioList = getUserPortfoliosPortofolio(currentEmail)
-                portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
+                val currList = getUserPortfoliosPortofolio()
+                portfolioAdapter = PortfolioAdapter(currList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
             }
@@ -156,16 +155,15 @@ class HomeFragment : Fragment() {
 
         if(summaryValue.totalValue == 0 && summaryValue.totalEarning == 0) {
             lifecycleScope.launch {
-                val tempValue = getCurrentUserValueData(currentEmail)
-                binding.homePortfolioValue.text = "Rp. ${formatNumber(tempValue.totalValue)}"
-                binding.homeEarnings.text = "Rp. ${formatNumber(tempValue.totalEarning)}"
+                summaryValue = getCurrentUserValueData(currentEmail)
+                summaryValue = sqliteDb.selectUserSummaryValue(currentEmail)
+                binding.homePortfolioValue.text = "Rp. ${formatNumber(summaryValue.totalValue)}"
+                binding.homeEarnings.text = "Rp. ${formatNumber(summaryValue.totalEarning)}"
             }
         } else {
             binding.homePortfolioValue.text = "Rp. ${formatNumber(summaryValue.totalValue)}"
             binding.homeEarnings.text = "Rp. ${formatNumber(summaryValue.totalEarning)}"
         }
-//        println("userPortfolioList = ${userPortfolioList}")
-
 
         binding.homeMenuSettings.setOnClickListener {
             // LOGOUT
@@ -175,9 +173,13 @@ class HomeFragment : Fragment() {
 //            editor.apply()
 //            val intent = Intent(requireContext(), MainActivity::class.java)
 //            startActivity(intent)
-
             val intent = Intent(requireContext(), SettingsActivity::class.java)
             startActivity(intent)
+        }
+
+        //Activate The Drawer
+        binding.profileImageView.setOnClickListener {
+            (activity as? Home)?.openDrawer()
         }
         // Inflate the layout for this fragment
         return binding.root

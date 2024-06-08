@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.buzifest.Fragment.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_portfolio"
+        android:name="com.example.buzifest.Fragment.PortofolioFragment"
+        android:label="Portfolio"
+        tools:layout="@layout/fragment_portofolio" />
+
+    <fragment
+        android:id="@+id/navigation_shop_list"
+        android:name="com.example.buzifest.Fragment.ShopListFragment"
+        android:label="Shop List"
+        tools:layout="@layout/fragment_shop_list" />
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.example.buzifest.Fragment.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+</navigation>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.buzifest.Activity.Home
 import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortofolioPageAdapter
 import com.example.buzifest.Helper.DatabaseHelper
@@ -58,7 +59,10 @@ class PortofolioFragment : Fragment() {
         binding.portofolioEarnings.text = "Rp. " + formatNumber(summaryValue.totalEarning)
         binding.portofolioAsset.text = "Rp. " + formatNumber(asset)
         binding.portofolioBalance.text = "Rp. " + formatNumber(balance)
-
+        //Activate The Drawer
+        binding.profileImageView.setOnClickListener {
+            (activity as? Home)?.openDrawer()
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

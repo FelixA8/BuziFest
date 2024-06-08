@@ -166,7 +166,6 @@ suspend fun getNewsData(context: Context): List<News> {
         emptyList()
     }
 }
-
 suspend fun getPortfoliosData(context: Context): List<Portfolio> {
     val db = FirebaseFirestore.getInstance()
     val portfolios = mutableListOf<Portfolio>()
@@ -212,7 +211,6 @@ suspend fun getAllUserPortfoliosData(context: Context): List<UserPortfolio> {
             val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
             val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
             sqliteDB.insertUserPortfolios(data)
-
             userPortfolios.add(data)
         }
         userPortfolios
@@ -265,13 +263,14 @@ suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortf
     }
 }
 
-suspend fun getUserPortfoliosPortofolio(currentEmail:String):List<Portfolio>{
+suspend fun getUserPortfoliosPortofolio():List<Portfolio>{
     val userPortfolios = mutableListOf<UserPortfolio>()
     val portfolioList = mutableListOf<Portfolio>()
     return try {
         val documents = db.collection("userPortfolios").get().await()
         for (document in documents.documents) {
             val email = (document["email"] as? String).orEmpty()
+            println("compare: ${email} | ${currentEmail}")
             if(email == currentEmail) {
                 val id = (document["id"] as? String).orEmpty()
                 val portfolioID = (document["portfolioID"] as? String).orEmpty()

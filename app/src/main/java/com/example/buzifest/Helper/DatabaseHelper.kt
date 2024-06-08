@@ -232,8 +232,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return userPortfolioList
     }
 
-    fun selectUserPortfoliosPortofolio():ArrayList<Portfolio> {
-        val userPortfolioList = selectUserPortfolio(currentEmail)
+    fun selectUserPortfoliosPortofolio(email:String):ArrayList<Portfolio> {
+        val userPortfolioList = selectUserPortfolio(email)
         println(userPortfolioList)
         val portfolioList:ArrayList<Portfolio> = arrayListOf()
         for(userPortfolio in userPortfolioList) {
@@ -245,7 +245,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     fun selectSpecificPortfolio(portfolioID: String):Portfolio {
-        println("id: ${portfolioID}")
         val db = readableDatabase
         val query = "SELECT * from portfolios WHERE id = ?"
         val query1 = "SELECT * from portfolios"

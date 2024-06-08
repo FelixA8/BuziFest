@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.buzifest.Activity.Home
 import com.example.buzifest.Adapter.PortofolioPageAdapter
 import com.example.buzifest.Adapter.ShopAdapter
 import com.example.buzifest.Helper.DatabaseHelper
@@ -36,6 +37,10 @@ class ShopListFragment : Fragment() {
         val gridLayoutManager = GridLayoutManager(context, 2)
         binding.shopRecycler.layoutManager = gridLayoutManager
         binding.shopRecycler.adapter = shopAdapter
+        //Activate The Drawer
+        binding.profileImageView.setOnClickListener {
+            (activity as? Home)?.openDrawer()
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

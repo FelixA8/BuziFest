@@ -1,9 +1,12 @@
 package com.example.buzifest.Activity
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.buzifest.Data.*
@@ -15,27 +18,35 @@ import com.example.buzifest.Helper.*
 import com.example.buzifest.MainActivity
 import com.example.buzifest.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.drawerlayout.widget.DrawerLayout
 
 class Home : AppCompatActivity() {
 
-    lateinit var bottomNav : BottomNavigationView
+    lateinit var bottomNav: BottomNavigationView
+    lateinit var drawerLayout: DrawerLayout
+    lateinit var navigationView: NavigationView
+    private lateinit var drawerToggle: ActionBarDrawerToggle
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val sharedpreferences = getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
 
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        bottomNav = findViewById(R.id.bottomNav)
+
+        val sharedpreferences =
+            getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
         val tempUserName = sharedpreferences.getString(MainActivity.USERNAME_KEY, null)
         val email = sharedpreferences.getString(MainActivity.EMAIL_KEY, null)
-        //Check if fetching user from firebase is required/ data is kept in sharedprefs.
-        if(tempUserName == null) {
+
+        if (tempUserName == null) {
             lifecycleScope.launch {
                 val editor = sharedpreferences.edit()
-                val userData = getUserFromFirestoreByEmail(email!!) //CallUserData
+                val userData = getUserFromFirestoreByEmail(email!!)
                 editor.putString(MainActivity.USERNAME_KEY, userData?.userName)
                 editor.putString(MainActivity.FIRSTNAME_KEY, userData?.firstName)
                 editor.putString(MainActivity.LASTNAME_KEY, userData?.lastName)
@@ -45,48 +56,29 @@ class Home : AppCompatActivity() {
                 editor.putString(MainActivity.ASSET_KEY, userData?.asset.toString())
                 editor.putString(MainActivity.ADDRESS_KEY, userData?.address)
                 editor.apply()
-                val userName = sharedpreferences.getString(MainActivity.USERNAME_KEY, null)
-                val firstName = sharedpreferences.getString(MainActivity.FIRSTNAME_KEY, null)
-                val lastName = sharedpreferences.getString(MainActivity.LASTNAME_KEY, null)
-                val idCardNumber = sharedpreferences.getString(MainActivity.IDCARDNUMBER_KEY, null)
-                val phoneNumber = sharedpreferences.getString(MainActivity.PHONENUMBER_KEY, null)
-                val balance = sharedpreferences.getString(MainActivity.BALANCE_KEY, null)
-                val asset = sharedpreferences.getString(MainActivity.ASSET_KEY, null)
-                val address = sharedpreferences.getString(MainActivity.ADDRESS_KEY, null)
-
-                currentEmail = email
-                currentUserName = userName!!
-                currentFirstName = firstName!!
-                currentLastName = lastName!!
-                currentIdCardNumber = idCardNumber!!
-                currentPhoneNumber = phoneNumber!!
-                currentBalance = balance!!.toInt()
-                currentAsset = asset!!.toInt()
-                currentAddress = address!!
+                setUserDetails(sharedpreferences)
             }
         } else {
-            val userName = sharedpreferences.getString(MainActivity.USERNAME_KEY, null)
-            val firstName = sharedpreferences.getString(MainActivity.FIRSTNAME_KEY, null)
-            val lastName = sharedpreferences.getString(MainActivity.LASTNAME_KEY, null)
-            val idCardNumber = sharedpreferences.getString(MainActivity.IDCARDNUMBER_KEY, null)
-            val phoneNumber = sharedpreferences.getString(MainActivity.PHONENUMBER_KEY, null)
-            val balance = sharedpreferences.getString(MainActivity.BALANCE_KEY, null)
-            val asset = sharedpreferences.getString(MainActivity.ASSET_KEY, null)
-            val address = sharedpreferences.getString(MainActivity.ADDRESS_KEY, null)
-
-            currentEmail = email!!
-            currentUserName = userName!!
-            currentFirstName = firstName!!
-            currentLastName = lastName!!
-            currentIdCardNumber = idCardNumber!!
-            currentPhoneNumber = phoneNumber!!
-            currentBalance = balance!!.toInt()
-            currentAsset = asset!!.toInt()
-            currentAddress = address!!
+            setUserDetails(sharedpreferences)
         }
+        // Set up the drawer toggle
+        drawerToggle = ActionBarDrawerToggle(
+            this, drawerLayout, R.string.drawer_open, R.string.drawer_close
+        )
+        drawerLayout.addDrawerListener(drawerToggle)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        drawerToggle.syncState()
 
+        setupBottomNavigation()
+        setupDrawerNavigation()
         loadFragment(HomeFragment())
-        bottomNav = findViewById(R.id.bottomNav) as BottomNavigationView
+    }
+
+    fun openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START)
+    }
+
+    private fun setupBottomNavigation() {
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.bottomNav_home -> {
@@ -105,16 +97,46 @@ class Home : AppCompatActivity() {
                     loadFragment(ChatFragment())
                     true
                 }
-                else -> {false}
+                else -> false
             }
         }
     }
-    private  fun loadFragment(fragment: Fragment){
+
+    private fun setupDrawerNavigation() {
+        navigationView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_about -> {
+                    loadFragment(HomeFragment())
+                    true
+                }
+                R.id.nav_seller -> {
+                    loadFragment(PortofolioFragment())
+                    true
+                }
+                else -> false
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container,fragment)
+        transaction.setCustomAnimations(androidx.navigation.ui.R.anim.design_bottom_sheet_slide_in, androidx.navigation.ui.R.anim.design_bottom_sheet_slide_out)
+        transaction.replace(R.id.container, fragment)
         transaction.commit()
     }
+
+    private fun setUserDetails(sharedpreferences: SharedPreferences) {
+        currentUserName = sharedpreferences.getString(MainActivity.USERNAME_KEY, null)!!
+        currentFirstName = sharedpreferences.getString(MainActivity.FIRSTNAME_KEY, null)!!
+        currentLastName = sharedpreferences.getString(MainActivity.LASTNAME_KEY, null)!!
+        currentIdCardNumber = sharedpreferences.getString(MainActivity.IDCARDNUMBER_KEY, null)!!
+        currentPhoneNumber = sharedpreferences.getString(MainActivity.PHONENUMBER_KEY, null)!!
+        currentBalance = sharedpreferences.getString(MainActivity.BALANCE_KEY, null).toString().toInt()
+        currentAsset = sharedpreferences.getString(MainActivity.ASSET_KEY, null).toString().toInt()
+        currentAddress = sharedpreferences.getString(MainActivity.ADDRESS_KEY, null)!!
+        currentEmail = sharedpreferences.getString(MainActivity.EMAIL_KEY, null)!!
+    }
 }
-
-
 

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.buzifest.Activity.Home
 import com.example.buzifest.Activity.Register
 import com.example.buzifest.Helper.DatabaseHelper
@@ -71,8 +72,10 @@ class MainActivity : AppCompatActivity() {
             if(loginEmail.text.isEmpty() || loginPassword.text.isEmpty()) {
                 Toast.makeText(this, "Please Enter all fields", Toast.LENGTH_SHORT).show()
             } else {
+                println("task")
                 auth.signInWithEmailAndPassword(loginEmail.text.toString(), loginPassword.text.toString())
                     .addOnCompleteListener(this) { task ->
+
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             val user = auth.currentUser
