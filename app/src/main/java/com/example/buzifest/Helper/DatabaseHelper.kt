@@ -78,6 +78,49 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
     }
 
+    fun checkUserPortfolioExist(currentPortfolioID: String):UserPortfolio {
+        val db = readableDatabase
+        val query = "SELECT * FROM userPortfolios"
+        val cursor = db.rawQuery(query, null)
+        while(cursor.moveToNext()) {
+            val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
+            val portfolioID = cursor.getString(cursor.getColumnIndexOrThrow("portfolioID"))
+            val userEmail = cursor.getString(cursor.getColumnIndexOrThrow("userEmail"))
+            val purchaseAmount = cursor.getInt(cursor.getColumnIndexOrThrow("purchaseAmount"))
+            val totalProfit = cursor.getInt(cursor.getColumnIndexOrThrow("totalProfit"))
+            if(portfolioID == currentPortfolioID) {
+                return UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit);
+            }
+        }
+        return UserPortfolio("","","",0,0)
+    }
+
+    fun selectSpecificUserPortfolioAmount(currentPortfolioID: String):Int{
+        val db = readableDatabase
+        val query = "SELECT purchaseAmount FROM userPortfolios WHERE id = ?"
+        var purchaseAmount = 0
+        val cursor = db.rawQuery(query, arrayOf(currentPortfolioID))
+        while(cursor.moveToNext()) {
+            purchaseAmount = cursor.getInt(cursor.getColumnIndexOrThrow("purchaseAmount")).toInt()
+        }
+        println(purchaseAmount)
+        return purchaseAmount
+    }
+
+    fun updateUserPortfolio(currentID: String, amount:Int): Boolean  {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put("purchaseAmount", amount)
+        return try {
+            val success = db.update("userPortfolios", contentValues, "id = ?", arrayOf(currentID))
+            success != -1
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        } finally {
+            db.close()
+        }
+    }
 
     fun selectAllPortfolios():ArrayList<Portfolio>{
         val db = readableDatabase
@@ -152,8 +195,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         while (cursorInvested.moveToNext()) {
             totalInvested = cursorInvested.getInt(cursorInvested.getColumnIndexOrThrow("total"))
         }
-        println("totalInvestor = ${totalInvestor}")
-        println("totalInvested = ${totalInvested}")
         return PortfolioSummary(totalInvestor, totalInvested)
     }
 

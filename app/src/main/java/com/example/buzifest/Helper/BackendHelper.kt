@@ -81,25 +81,47 @@ public fun changeUserAsset(amount:Int, email:String) {
     }
 }
 
-public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
-    val value = hashMapOf(
+public fun addExistingUserPortfolio(userPortfolio: UserPortfolio, context: Context){
+    val docRef = db.collection("userPortfolios").document(userPortfolio.id)
+    val value = hashMapOf<String, Any>(
         "id" to userPortfolio.id,
         "email" to userPortfolio.userEmail,
         "portfolioID" to userPortfolio.portfolioID,
         "purchaseAmount" to userPortfolio.purchaseAmount,
         "totalProfit" to userPortfolio.totalProfit
     )
-    val sqliteDB = DatabaseHelper(context = context)
-    sqliteDB.insertUserPortfolios(userPortfolio)
-    db.collection("userPortfolios").document(userPortfolio.id)
-        .set(value)
-        .addOnSuccessListener {
-            // Successfully added user to Firestore
-        }
-        .addOnFailureListener { e ->
-            // Failed to add user to Firestore
-            print(e)
-        }
+    val sqliteDb = DatabaseHelper(context)
+    val output = sqliteDb.updateUserPortfolio(userPortfolio.id, userPortfolio.purchaseAmount)
+    docRef.update(value).addOnSuccessListener {
+        println(output)
+    }.addOnFailureListener {
+        println("Failed!")
+    }
+}
+
+public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
+    try {
+        val value = hashMapOf<String, Any>(
+            "id" to userPortfolio.id,
+            "email" to userPortfolio.userEmail,
+            "portfolioID" to userPortfolio.portfolioID,
+            "purchaseAmount" to userPortfolio.purchaseAmount,
+            "totalProfit" to userPortfolio.totalProfit
+        )
+        val sqliteDB = DatabaseHelper(context = context)
+        sqliteDB.insertUserPortfolios(userPortfolio)
+        db.collection("userPortfolios").document(userPortfolio.id)
+            .set(value)
+            .addOnSuccessListener {
+                // Successfully added user to Firestore
+            }
+            .addOnFailureListener { e ->
+                // Failed to add user to Firestore
+                print(e)
+            }
+    } catch (e:Exception) {
+
+    }
 }
 
 public fun addNews(news: News, context: Context) {

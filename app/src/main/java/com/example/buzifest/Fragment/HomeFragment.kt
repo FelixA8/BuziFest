@@ -99,10 +99,6 @@ class HomeFragment : Fragment() {
                 refreshHome.isRefreshing = false
             }
         }
-
-
-
-
         trending.setOnClickListener{
             val intent = Intent(context, PortfolioDetail::class.java)
             startActivity(intent)
