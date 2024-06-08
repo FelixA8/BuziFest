@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.buzifest.Activity.NewsActivity
 import com.example.buzifest.Activity.PortfolioDetail
+import com.example.buzifest.Activity.SettingsActivity
 import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortfolioAdapter
 import com.example.buzifest.Data.*
@@ -170,14 +171,16 @@ class HomeFragment : Fragment() {
 //        println("userPortfolioList = ${userPortfolioList}")
 
 
-
-
         binding.homeMenuSettings.setOnClickListener {
-            val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
-            val editor = sharedpreferences.edit()
-            editor.clear()
-            editor.apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
+            // LOGOUT
+//            val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
+//            val editor = sharedpreferences.edit()
+//            editor.clear()
+//            editor.apply()
+//            val intent = Intent(requireContext(), MainActivity::class.java)
+//            startActivity(intent)
+
+            val intent = Intent(requireContext(), SettingsActivity::class.java)
             startActivity(intent)
         }
         // Inflate the layout for this fragment

@@ -4,8 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import com.example.buzifest.Data.UserPortfolio
+import com.example.buzifest.Data.generateUUID
 import com.example.buzifest.Helper.DatabaseHelper
+import com.example.buzifest.Helper.addUserPortfolio
+import com.example.buzifest.Helper.currentEmail
 import com.example.buzifest.R
+import kotlinx.coroutines.launch
 
 class BuyConfirmationActivity : AppCompatActivity() {
 
@@ -50,7 +57,18 @@ class BuyConfirmationActivity : AppCompatActivity() {
 
         // button
         button.setOnClickListener{
-
+            lifecycleScope.launch {
+                try {
+                    val userPortfolio = UserPortfolio(generateUUID(), currentEmail, portfolioID, amount, 0)
+                    addUserPortfolio(userPortfolio, this@BuyConfirmationActivity)
+                    val intent = Intent(this@BuyConfirmationActivity, Home::class.java)
+                    Toast.makeText(this@BuyConfirmationActivity, "Success!", Toast.LENGTH_SHORT).show()
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } catch (e:Exception) {
+                    println(e)
+                }
+            }
         }
 
     }

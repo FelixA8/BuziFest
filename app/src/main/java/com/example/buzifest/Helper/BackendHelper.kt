@@ -1,10 +1,9 @@
 package com.example.buzifest.Helper
 
 import android.content.Context
-import android.provider.ContactsContract.Data
 import com.example.buzifest.Data.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.tasks.await
 
 val db = FirebaseFirestore.getInstance()
