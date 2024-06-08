@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/trending_recycler_layout"
+    app:cardCornerRadius="15sp"
+    android:layout_marginBottom="10sp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_rounded_gray">
+
+        <LinearLayout
+            android:id="@+id/portofolio_list_linear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="20sp"
+            android:layout_height="match_parent"
+            android:background="@color/green"
+            android:orientation="vertical"/>
+
+        <ImageView
+            android:id="@+id/trending_recyler_point"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:src="@drawable/home_portofolio_point"
+            app:layout_constraintStart_toEndOf="@id/portofolio_list_linear"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="12sp"/>
+
+        <TextView
+            android:id="@+id/trending_recyler_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ 1.5%"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/trending_recyler_point"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="10sp"/>
+
+
+        <ImageView
+            android:id="@+id/trending_recyler_logo"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:src="@drawable/portofolio_recycler_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/trending_recycler_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="10sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trending_recycler_name"
+            android:text="Bright Lamp"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="20sp"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
