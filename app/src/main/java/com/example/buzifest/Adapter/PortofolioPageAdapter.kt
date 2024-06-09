@@ -1,13 +1,17 @@
 package com.example.buzifest.Adapter
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.buzifest.Activity.PortfolioDetail
 import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Data.UserPortfolio
 import com.example.buzifest.Helper.DatabaseHelper
@@ -41,6 +45,13 @@ class PortofolioPageAdapter(private val userPortofolioList: List<UserPortfolio>,
         holder.portfolioEarnings.text = formatNumber(currentItem.totalProfit+currentItem.purchaseAmount)
         holder.portofolioName.text = portfolio.storeName
         holder.portofolioPercentage.text = String.format("%.2f",(currentItem.totalProfit.toDouble()/currentItem.purchaseAmount.toDouble())*100.0)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, PortfolioDetail::class.java).apply {
+                putExtra("portfolioID", currentItem.portfolioID)
+                putExtra("status", "withdrawShare")
+            }
+            ContextCompat.startActivity(context, intent, Bundle.EMPTY)
+        }
         holder.portofolioPoint
         Glide.with(holder.itemView.context)
             .load(portfolio.logo)

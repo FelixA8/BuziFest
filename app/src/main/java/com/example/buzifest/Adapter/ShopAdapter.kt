@@ -48,6 +48,7 @@ class ShopAdapter(private val shopList: List<Portfolio>, private val context: Co
         holder.itemView.setOnClickListener {
             val intent = Intent(context, PortfolioDetail::class.java).apply {
                 putExtra("portfolioID", currentItem.id)
+                putExtra("status", "buyShare")
             }
             startActivity(context, intent, Bundle.EMPTY)
         }

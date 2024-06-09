@@ -2,6 +2,7 @@ package com.example.buzifest.Activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -43,6 +44,7 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         val portfolioID = intent.getStringExtra("portfolioID")
+        val status = intent.getStringExtra("status")
         val currentPortfolio = sqliteDb.selectSpecificPortfolio(portfolioID!!)
         val portfolioData = sqliteDb.selectPurchaseAmountOfPortfolio(portfolioID)
 
@@ -84,13 +86,25 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         binding.detailLocationDetailProvince.text = currentPortfolio.province
         binding.detailLocationDetailAddress.text = currentPortfolio.address
 
-        //Set BuyButton
-        binding.detailBuyButton.setOnClickListener {
-            val intent = Intent(this, BuyActivity::class.java).apply {
-                putExtra("portfolioID", portfolioID)
+        if(status == "buyShare") {
+            //Set BuyButton
+            binding.detailBuyButton.setOnClickListener {
+                val intent = Intent(this, BuyActivity::class.java).apply {
+                    putExtra("portfolioID", portfolioID)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
+        } else {
+            binding.detailBuyButton.setBackgroundResource(R.drawable.bg_rounded_green)
+            binding.detailBuyButton.setText("Withdraw")
+            binding.detailBuyButton.setOnClickListener {
+                val intent = Intent(this, BuyActivity::class.java).apply {
+                    putExtra("portfolioID", portfolioID)
+                }
+                startActivity(intent)
+            }
         }
+
     }
 
 
