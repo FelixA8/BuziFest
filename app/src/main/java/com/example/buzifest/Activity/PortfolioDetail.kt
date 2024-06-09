@@ -40,17 +40,15 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         val binding = ActivityPortfolioDetailBinding.inflate(layoutInflater)
         val sqliteDb = DatabaseHelper(this)
-
         setContentView(binding.root)
-
         val portfolioID = intent.getStringExtra("portfolioID")
         val status = intent.getStringExtra("status")
         val currentPortfolio = sqliteDb.selectSpecificPortfolio(portfolioID!!)
         val portfolioData = sqliteDb.selectPurchaseAmountOfPortfolio(portfolioID)
 
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation()
-
         val amount = portfolioData.totalInvested // Amount of invested portfolio
         val totalInvestor = portfolioData.totalInvestor // Amount of total investors in a portfolio
         //Setting the Data
@@ -86,7 +84,6 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         binding.detailLocationDetailProvince.text = currentPortfolio.province
         binding.detailLocationDetailAddress.text = currentPortfolio.address
 
-        if(status == "buyShare") {
             //Set BuyButton
             binding.detailBuyButton.setOnClickListener {
                 val intent = Intent(this, BuyActivity::class.java).apply {
@@ -94,22 +91,8 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
                 }
                 startActivity(intent)
             }
-        } else {
-            binding.detailBuyButton.setBackgroundResource(R.drawable.bg_rounded_green)
-            binding.detailBuyButton.setText("Withdraw")
-            binding.detailBuyButton.setOnClickListener {
-                val intent = Intent(this, BuyActivity::class.java).apply {
-                    putExtra("portfolioID", portfolioID)
-                }
-                startActivity(intent)
-            }
-        }
 
     }
-
-
-
-
 
     fun getLastLocation(){
         //Get the permission of the device and set the lat and lng of the location.

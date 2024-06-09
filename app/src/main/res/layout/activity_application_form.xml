@@ -261,6 +261,28 @@
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
                 />
+            <EditText
+                android:id="@+id/application_full_name"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:background="@drawable/bg_rounded_gray"
+                android:layout_marginTop="12sp"
+                android:hint="Seller Full Name"
+                android:textColorHint="@color/white"
+                android:paddingLeft="10sp"
+                />
+            <EditText
+                android:id="@+id/application_phone_number"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:background="@drawable/bg_rounded_gray"
+                android:layout_marginTop="12sp"
+                android:hint="Phone Number"
+                android:textColorHint="@color/white"
+                android:paddingLeft="10sp"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -302,6 +324,7 @@
 
 
             <TextView
+                android:id="@+id/application_submit_button"
                 android:layout_width="90sp"
                 android:layout_height="50sp"
                 android:background="@drawable/bg_rounded_green"

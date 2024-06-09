@@ -251,6 +251,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return ValueSummaryData(totalValue, totalResult)
     }
 
+    fun selectSpecificUserPortfolio(portfolioID:String):UserPortfolio {
+        val db = readableDatabase
+        lateinit var userPortfolio:UserPortfolio
+        val query = "SELECT * from userPortfolios WHERE id = ?"
+        val cursorValue = db.rawQuery(query, arrayOf(portfolioID))
+        while (cursorValue.moveToNext()) {
+            val id = cursorValue.getString(cursorValue.getColumnIndexOrThrow("id"))
+            val portfolioID = cursorValue.getString(cursorValue.getColumnIndexOrThrow("portfolioID"))
+            val userEmail = cursorValue.getString(cursorValue.getColumnIndexOrThrow("userEmail"))
+            val purchaseAmount = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("purchaseAmount"))
+            val totalProfit = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalProfit"))
+
+            userPortfolio = UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit)
+        }
+        cursorValue.close()
+        db.close()
+        return userPortfolio
+    }
+
     fun selectUserPortfolio(email:String):ArrayList<UserPortfolio> {
         val db = readableDatabase
         val userPortfolioList:ArrayList<UserPortfolio> = ArrayList()
@@ -326,6 +345,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
         return tempPortfolio
     }
+
+
 
     fun clearDatabase() {
         val db = writableDatabase

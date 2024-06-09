@@ -46,22 +46,19 @@ class Home : AppCompatActivity() {
         val tempUserName = sharedpreferences.getString(MainActivity.USERNAME_KEY, null)
         val email = sharedpreferences.getString(MainActivity.EMAIL_KEY, null)
 
-        if (tempUserName == null) {
-            lifecycleScope.launch {
-                val editor = sharedpreferences.edit()
-                val userData = getUserFromFirestoreByEmail(email!!)
-                editor.putString(MainActivity.USERNAME_KEY, userData?.userName)
-                editor.putString(MainActivity.FIRSTNAME_KEY, userData?.firstName)
-                editor.putString(MainActivity.LASTNAME_KEY, userData?.lastName)
-                editor.putString(MainActivity.IDCARDNUMBER_KEY, userData?.idCardNumber)
-                editor.putString(MainActivity.PHONENUMBER_KEY, userData?.phoneNumber)
-                editor.putString(MainActivity.BALANCE_KEY, userData?.balance.toString())
-                editor.putString(MainActivity.ASSET_KEY, userData?.asset.toString())
-                editor.putString(MainActivity.ADDRESS_KEY, userData?.address)
-                editor.apply()
-                setUserDetails(sharedpreferences)
-            }
-        } else {
+        lifecycleScope.launch {
+            val editor = sharedpreferences.edit()
+            val userData = getUserFromFirestoreByEmail(email!!)
+            println("userdata: ${userData?.balance}")
+            editor.putString(MainActivity.USERNAME_KEY, userData?.userName)
+            editor.putString(MainActivity.FIRSTNAME_KEY, userData?.firstName)
+            editor.putString(MainActivity.LASTNAME_KEY, userData?.lastName)
+            editor.putString(MainActivity.IDCARDNUMBER_KEY, userData?.idCardNumber)
+            editor.putString(MainActivity.PHONENUMBER_KEY, userData?.phoneNumber)
+            editor.putString(MainActivity.BALANCE_KEY, userData?.balance.toString())
+            editor.putString(MainActivity.ASSET_KEY, userData?.asset.toString())
+            editor.putString(MainActivity.ADDRESS_KEY, userData?.address)
+            editor.apply()
             setUserDetails(sharedpreferences)
         }
         // Set up the drawer toggle

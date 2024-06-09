@@ -1,5 +1,6 @@
 package com.example.buzifest.Fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.buzifest.Helper.DatabaseHelper
 import com.example.buzifest.Helper.currentBalance
 import com.example.buzifest.Helper.currentEmail
 import com.example.buzifest.Helper.formatNumber
+import com.example.buzifest.MainActivity
 import com.example.buzifest.R
 import com.example.buzifest.databinding.FragmentPortofolioBinding
 
@@ -43,14 +45,14 @@ class PortofolioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharedPreferences = requireContext().getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
         val sqliteDb = DatabaseHelper(requireContext())
         val binding = FragmentPortofolioBinding.inflate(layoutInflater)
         val summaryValue = sqliteDb.selectUserSummaryValue(currentEmail)
-        val balance = currentBalance
+        val balance = sharedPreferences.getString(MainActivity.BALANCE_KEY, null).toString().toInt()
         val asset = summaryValue.totalValue + balance + summaryValue.totalEarning
 
         val userPortfolioList = sqliteDb.selectFulfilledUserPortfolio(currentEmail)
-
         val portfolioListAdapter = PortofolioPageAdapter(userPortfolioList, requireContext())
         binding.portofolioRecycler.layoutManager = LinearLayoutManager(context)
         binding.portofolioRecycler.adapter = portfolioListAdapter

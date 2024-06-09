@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.buzifest.Activity.FulfilledPortfolioDetail
 import com.example.buzifest.Activity.PortfolioDetail
 import com.example.buzifest.Data.Portfolio
 import com.example.buzifest.Data.UserPortfolio
@@ -46,9 +47,10 @@ class PortofolioPageAdapter(private val userPortofolioList: List<UserPortfolio>,
         holder.portofolioName.text = portfolio.storeName
         holder.portofolioPercentage.text = String.format("%.2f",(currentItem.totalProfit.toDouble()/currentItem.purchaseAmount.toDouble())*100.0)
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, PortfolioDetail::class.java).apply {
+            val intent = Intent(context, FulfilledPortfolioDetail::class.java).apply {
                 putExtra("portfolioID", currentItem.portfolioID)
-                putExtra("status", "withdrawShare")
+                putExtra("userPortfolioID", currentItem.id)
+                putExtra("status", "fulfilled")
             }
             ContextCompat.startActivity(context, intent, Bundle.EMPTY)
         }
