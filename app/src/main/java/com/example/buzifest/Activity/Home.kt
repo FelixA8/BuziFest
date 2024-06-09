@@ -120,7 +120,8 @@ class Home : AppCompatActivity() {
                     true
                 }
                 R.id.nav_seller -> {
-                    loadFragment(PortofolioFragment())
+                    val intent = Intent(this, ApplicationFormActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_top_up -> {
