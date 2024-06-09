@@ -49,7 +49,7 @@ class PortofolioFragment : Fragment() {
         val balance = currentBalance
         val asset = summaryValue.totalValue + balance + summaryValue.totalEarning
 
-        val userPortfolioList = sqliteDb.selectUserPortfolio(currentEmail)
+        val userPortfolioList = sqliteDb.selectFulfilledUserPortfolio(currentEmail)
 
         val portfolioListAdapter = PortofolioPageAdapter(userPortfolioList, requireContext())
         binding.portofolioRecycler.layoutManager = LinearLayoutManager(context)

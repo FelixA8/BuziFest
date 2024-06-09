@@ -8,6 +8,7 @@
     android:background="@color/blue">
 
     <ImageView
+        android:id="@+id/news_back_button"
         android:layout_width="30sp"
         android:layout_height="30sp"
         android:src="@drawable/detail_back_button"

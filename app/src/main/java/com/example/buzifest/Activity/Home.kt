@@ -2,9 +2,12 @@ package com.example.buzifest.Activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -65,9 +68,16 @@ class Home : AppCompatActivity() {
         drawerToggle = ActionBarDrawerToggle(
             this, drawerLayout, R.string.drawer_open, R.string.drawer_close
         )
+
         drawerLayout.addDrawerListener(drawerToggle)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawerToggle.syncState()
+
+        val headerView = LayoutInflater.from(this).inflate(R.layout.custom_drawer_header, navigationView, false)
+        navigationView.addHeaderView(headerView)
+
+        val headerTV = headerView.findViewById<TextView>(R.id.drawer_header_username)
+        headerTV.text = currentUserName
 
         setupBottomNavigation()
         setupDrawerNavigation()
@@ -113,6 +123,11 @@ class Home : AppCompatActivity() {
                     loadFragment(PortofolioFragment())
                     true
                 }
+                R.id.nav_top_up -> {
+                    val intent = Intent(this, TopUpActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 else -> false
             }
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -137,6 +152,7 @@ class Home : AppCompatActivity() {
         currentAsset = sharedpreferences.getString(MainActivity.ASSET_KEY, null).toString().toInt()
         currentAddress = sharedpreferences.getString(MainActivity.ADDRESS_KEY, null)!!
         currentEmail = sharedpreferences.getString(MainActivity.EMAIL_KEY, null)!!
+        println("balance: ${currentBalance}")
     }
 }
 

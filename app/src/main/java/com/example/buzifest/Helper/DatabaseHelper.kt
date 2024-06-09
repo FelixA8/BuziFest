@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.core.content.contentValuesOf
 import com.example.buzifest.Data.*
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -92,6 +93,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 return UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit);
             }
         }
+        cursor.close()
+        db.close()
         return UserPortfolio("","","",0,0)
     }
 
@@ -103,7 +106,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         while(cursor.moveToNext()) {
             purchaseAmount = cursor.getInt(cursor.getColumnIndexOrThrow("purchaseAmount")).toInt()
         }
-        println(purchaseAmount)
+        cursor.close()
+        db.close()
         return purchaseAmount
     }
 
@@ -145,6 +149,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val tempPortfolio = Portfolio(id, storeName, address, province, image, storeType, logo, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
             portfolioList.add(tempPortfolio)
         }
+        cursor.close()
+        db.close()
         return portfolioList
     }
 
@@ -162,7 +168,29 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val tempUserPortfolio = UserPortfolio(id,userEmail,portfolioID,purchaseAmount,totalProfit)
             userPortfolioList.add(tempUserPortfolio)
         }
+        cursor.close()
+        db.close()
         return userPortfolioList
+    }
+
+
+
+    fun selectTopNews():ArrayList<News> {
+        val db = readableDatabase
+        val newsList:ArrayList<News> = ArrayList()
+        val query = "SELECT * FROM news LIMIT 5"
+        val cursor = db.rawQuery(query, null)
+        while(cursor.moveToNext()) {
+            val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
+            val newsLinkUrl = cursor.getString(cursor.getColumnIndexOrThrow("newsLinkUrl"))
+            val newsTitle = cursor.getString(cursor.getColumnIndexOrThrow("newsTitle"))
+            val newsImageUrl = cursor.getString(cursor.getColumnIndexOrThrow("newsImageUrl"))
+            val tempNews = News(id, newsLinkUrl, newsTitle, newsImageUrl)
+            newsList.add(tempNews)
+        }
+        cursor.close()
+        db.close()
+        return newsList
     }
 
     fun selectAllNews():ArrayList<News> {
@@ -178,6 +206,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val tempNews = News(id, newsLinkUrl, newsTitle, newsImageUrl)
             newsList.add(tempNews)
         }
+        cursor.close()
+        db.close()
         return newsList
     }
 
@@ -195,6 +225,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         while (cursorInvested.moveToNext()) {
             totalInvested = cursorInvested.getInt(cursorInvested.getColumnIndexOrThrow("total"))
         }
+        cursorInvestor.close()
+        cursorInvested.close()
+        db.close()
         return PortfolioSummary(totalInvestor, totalInvested)
     }
 
@@ -212,7 +245,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         while (cursorResult.moveToNext()) {
             totalResult = cursorResult.getInt(cursorResult.getColumnIndexOrThrow("totalValue"))
         }
-
+        cursorValue.close()
+        cursorResult.close()
+        db.close()
         return ValueSummaryData(totalValue, totalResult)
     }
 
@@ -227,19 +262,38 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val userEmail = cursorValue.getString(cursorValue.getColumnIndexOrThrow("userEmail"))
             val purchaseAmount = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("purchaseAmount"))
             val totalProfit = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalProfit"))
+
             userPortfolioList.add(UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit))
         }
+        cursorValue.close()
+        db.close()
         return userPortfolioList
+    }
+
+
+    fun selectFulfilledUserPortfolio(currentEmail:String):ArrayList<UserPortfolio>{
+        val userPortfolios = selectUserPortfolio(currentEmail)
+        val fulfilledUserPortfolios:ArrayList<UserPortfolio> = arrayListOf()
+        for (userPortfolio in userPortfolios) {
+            val portfolio = selectSpecificPortfolio(userPortfolio.portfolioID)
+            val totalInvested = selectPurchaseAmountOfPortfolio(userPortfolio.portfolioID).totalInvested
+            if(totalInvested >= portfolio.fundingTarget) {
+                fulfilledUserPortfolios.add(userPortfolio)
+            }
+        }
+        return fulfilledUserPortfolios
     }
 
     fun selectUserPortfoliosPortofolio(email:String):ArrayList<Portfolio> {
         val userPortfolioList = selectUserPortfolio(email)
-        println(userPortfolioList)
         val portfolioList:ArrayList<Portfolio> = arrayListOf()
         for(userPortfolio in userPortfolioList) {
-            println(userPortfolio)
             val portfolio = selectSpecificPortfolio(userPortfolio.portfolioID)
-            portfolioList.add(portfolio)
+            val totalInvested = selectPurchaseAmountOfPortfolio(userPortfolio.portfolioID).totalInvested
+            println("${portfolio.fundingTarget} | ${totalInvested}")
+            if(totalInvested < portfolio.fundingTarget) {
+                portfolioList.add(portfolio)
+            }
         }
         return portfolioList
     }
@@ -250,7 +304,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val query1 = "SELECT * from portfolios"
         lateinit var tempPortfolio: Portfolio
         val cursor = db.rawQuery(query, arrayOf(portfolioID))
-        val cursor1 = db.rawQuery(query1, null)
 
         while (cursor.moveToNext()) {
             val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
@@ -269,6 +322,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val grossProfit = cursor.getInt(cursor.getColumnIndexOrThrow("grossProfit"))
             tempPortfolio = Portfolio(id, storeName, address, province, image, storeType, logo, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
         }
+        cursor.close()
+        db.close()
         return tempPortfolio
     }
 
@@ -282,4 +337,5 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         // Close the database connection
         db.close()
     }
+
 }

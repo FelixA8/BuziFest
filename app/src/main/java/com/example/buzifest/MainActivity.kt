@@ -72,29 +72,33 @@ class MainActivity : AppCompatActivity() {
             if(loginEmail.text.isEmpty() || loginPassword.text.isEmpty()) {
                 Toast.makeText(this, "Please Enter all fields", Toast.LENGTH_SHORT).show()
             } else {
-                println("task")
-                auth.signInWithEmailAndPassword(loginEmail.text.toString(), loginPassword.text.toString())
-                    .addOnCompleteListener(this) { task ->
 
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            val user = auth.currentUser
-                            val intent = Intent(this, Home::class.java).apply {
-                                putExtra("email", user!!.email.toString())
-                                val editor = sharedpreferences.edit()
-                                editor.clear()
-                                editor.putString(EMAIL_KEY, loginEmail.text.toString())
-                                editor.putString(PASSWORD_KEY, loginPassword.text.toString())
-                                editor.apply()
+                try {
+                    auth.signInWithEmailAndPassword(loginEmail.text.toString(), loginPassword.text.toString())
+                        .addOnCompleteListener(this) { task ->
+
+                            if (task.isSuccessful) {
+                                // Sign in success, update UI with the signed-in user's information
+                                val user = auth.currentUser
+                                val intent = Intent(this, Home::class.java).apply {
+                                    putExtra("email", user!!.email.toString())
+                                    val editor = sharedpreferences.edit()
+                                    editor.clear()
+                                    editor.putString(EMAIL_KEY, loginEmail.text.toString())
+                                    editor.putString(PASSWORD_KEY, loginPassword.text.toString())
+                                    editor.apply()
+                                }
+                                startActivity(intent)
+                                // Update UI or navigate to the main activity
+                            } else {
+                                Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_SHORT).show()
+                                // If sign in fails, display a message to the user.
+                                // Update UI
                             }
-                            startActivity(intent)
-                            // Update UI or navigate to the main activity
-                        } else {
-                            Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_SHORT).show()
-                            // If sign in fails, display a message to the user.
-                            // Update UI
                         }
-                    }
+                } catch (e:Exception) {
+                    println(e)
+                }
             }
         }
     }

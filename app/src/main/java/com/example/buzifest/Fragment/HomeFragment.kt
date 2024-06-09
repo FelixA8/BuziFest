@@ -87,7 +87,7 @@ class HomeFragment : Fragment() {
                 newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                 newsRecyclerView.adapter = homeNewsAdapter
                 getAllUserPortfoliosData(requireContext())
-                val portfolioList = getUserPortfoliosPortofolio()
+                val portfolioList = getUserPortfoliosPortofolio(requireContext())
                 portfolioAdapter = PortfolioAdapter(portfolioList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
@@ -109,10 +109,10 @@ class HomeFragment : Fragment() {
         }
 
         var portfolioList = sqliteDb.selectAllPortfolios()
-        var newsList = sqliteDb.selectAllNews()
+        var newsList = sqliteDb.selectTopNews()
         val allUserPortfolioList = sqliteDb.selectAllUserPortfolios()
         val userPortfolioList = sqliteDb.selectUserPortfoliosPortofolio(email!!)
-        var summaryValue = sqliteDb.selectUserSummaryValue(email!!)
+        var summaryValue = sqliteDb.selectUserSummaryValue(email)
 
         if(portfolioList.isEmpty()) {
             lifecycleScope.launch {
@@ -123,7 +123,7 @@ class HomeFragment : Fragment() {
         if(newsList.isEmpty()) {
             lifecycleScope.launch {
                 getNewsData(requireContext()) //CallPortfolioData and save it to sqlite.
-                newsList = sqliteDb.selectAllNews()
+                newsList = sqliteDb.selectTopNews()
                 homeNewsAdapter = HomeNewsAdapter(newsList)
                 newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
                 newsRecyclerView.adapter = homeNewsAdapter
@@ -142,7 +142,7 @@ class HomeFragment : Fragment() {
 
         if(userPortfolioList.isEmpty()) {
             lifecycleScope.launch {
-                val currList = getUserPortfoliosPortofolio()
+                val currList = getUserPortfoliosPortofolio(requireContext())
                 portfolioAdapter = PortfolioAdapter(currList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
@@ -166,6 +166,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.homeMenuSettings.setOnClickListener {
+
             // LOGOUT
 //            val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
 //            val editor = sharedpreferences.edit()
@@ -173,7 +174,7 @@ class HomeFragment : Fragment() {
 //            editor.apply()
 //            val intent = Intent(requireContext(), MainActivity::class.java)
 //            startActivity(intent)
-            val intent = Intent(requireContext(), SettingsActivity::class.java)
+            val intent = Intent(context, SettingsActivity::class.java)
             startActivity(intent)
         }
 
@@ -184,14 +185,9 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding.root
     }
-}
 
-class NonScrollableLayoutManager(context: Context) : LinearLayoutManager(context) {
-    override fun canScrollVertically(): Boolean {
-        return false // Disable vertical scrolling
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun canScrollHorizontally(): Boolean {
-        return false // Disable horizontal scrolling if needed
     }
 }

@@ -43,9 +43,6 @@ class HomeNewsAdapter(private val newsHomeList: List<News>): RecyclerView.Adapte
             val newsURL = currentItem.newsLinkUrl
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(newsURL))
             holder.itemView.context.startActivity(intent)
-
         }
-
-
     }
 }

@@ -2,6 +2,7 @@ package com.example.buzifest.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.buzifest.R
 
 class TrendingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,7 +1,9 @@
 package com.example.buzifest.Helper
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.buzifest.Data.*
+import com.example.buzifest.MainActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.tasks.await
@@ -61,7 +63,7 @@ public fun addPortfolio(portfolio: Portfolio, context: Context){
     )
     val sqliteDB = DatabaseHelper(context = context)
     sqliteDB.insertPortfolio(portfolio)
-
+    sqliteDB.close()
     db.collection("portfolios").document(portfolio.id)
         .set(value)
         .addOnSuccessListener {
@@ -75,9 +77,31 @@ public fun addPortfolio(portfolio: Portfolio, context: Context){
 
 public fun changeUserAsset(amount:Int, email:String) {
     db.collection("users").document(email).update("asset", amount).addOnSuccessListener {
-        println("User email successfully updated!")
+        println("User asset successfully updated!")
     }.addOnFailureListener { e ->
         println("Error updating user email: $e")
+    }
+}
+
+public fun changeBalance(amount:Int, email: String,operation:String,sharedPreferences: SharedPreferences) {
+    val editor = sharedPreferences.edit()
+    if(operation=="add") {
+        db.collection("users").document(email).update("balance", currentBalance+amount).addOnSuccessListener {
+            println("User balance successfully updated!")
+            editor.putString(MainActivity.BALANCE_KEY, (currentBalance + amount).toString())
+            currentBalance += amount
+        }.addOnFailureListener { e ->
+            println("Error updating user email: $e")
+        }
+    } else if(operation == "sub") {
+        db.collection("users").document(email).update("balance", currentBalance-amount).addOnSuccessListener {
+            println("User balance successfully updated!")
+            editor.putString(MainActivity.BALANCE_KEY, (currentBalance - amount).toString())
+            currentBalance -= amount
+
+        }.addOnFailureListener { e ->
+            println("Error updating user email: $e")
+        }
     }
 }
 
@@ -97,6 +121,7 @@ public fun addExistingUserPortfolio(userPortfolio: UserPortfolio, context: Conte
     }.addOnFailureListener {
         println("Failed!")
     }
+    sqliteDb.close()
 }
 
 public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
@@ -110,6 +135,7 @@ public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
         )
         val sqliteDB = DatabaseHelper(context = context)
         sqliteDB.insertUserPortfolios(userPortfolio)
+        sqliteDB.close()
         db.collection("userPortfolios").document(userPortfolio.id)
             .set(value)
             .addOnSuccessListener {
@@ -122,6 +148,7 @@ public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
     } catch (e:Exception) {
 
     }
+
 }
 
 public fun addNews(news: News, context: Context) {
@@ -133,7 +160,7 @@ public fun addNews(news: News, context: Context) {
         "newsLinkUrl" to news.newsLinkUrl
     )
     sqliteDB.insertNews(news)
-
+    sqliteDB.close()
     db.collection("news").document(news.id)
         .set(value)
         .addOnSuccessListener {
@@ -160,6 +187,7 @@ suspend fun getNewsData(context: Context): List<News> {
             news.add(tempNews)
             sqliteDB.insertNews(tempNews)
         }
+        sqliteDB.close()
         news
     } catch (e: Exception) {
         println("Error getting documents: $e")
@@ -191,6 +219,7 @@ suspend fun getPortfoliosData(context: Context): List<Portfolio> {
             portfolios.add(data)
             sqliteDB.insertPortfolio(data)
         }
+        sqliteDB.close()
         portfolios
     } catch (e: Exception) {
         println("Error getting documents: $e")
@@ -213,6 +242,7 @@ suspend fun getAllUserPortfoliosData(context: Context): List<UserPortfolio> {
             sqliteDB.insertUserPortfolios(data)
             userPortfolios.add(data)
         }
+        sqliteDB.close()
         userPortfolios
     } catch (e: Exception) {
         println("Error getting documents: $e")
@@ -263,7 +293,7 @@ suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortf
     }
 }
 
-suspend fun getUserPortfoliosPortofolio():List<Portfolio>{
+suspend fun getUserPortfoliosPortofolio(context: Context):List<Portfolio>{
     val userPortfolios = mutableListOf<UserPortfolio>()
     val portfolioList = mutableListOf<Portfolio>()
     return try {
@@ -280,28 +310,32 @@ suspend fun getUserPortfoliosPortofolio():List<Portfolio>{
                 userPortfolios.add(data)
             }
         }
-        println(userPortfolios)
         for(userPortfolio in userPortfolios) {
             val docRef = db.collection("portfolios").document(userPortfolio.portfolioID)
+            val sqliteDb = DatabaseHelper(context)
             val document = docRef.get().await()
             if(document.exists()) {
-                val storeType = (document["storeType"] as? String).orEmpty()
-                val address = (document["address"] as? String).orEmpty()
-                val province = (document["province"] as? String).orEmpty()
-                val imageUrl = (document["imageUrl"] as? String).orEmpty()
-                val publisher = (document["publisher"] as? String).orEmpty()
-                val logoUrl = (document["logoUrl"] as? String).orEmpty()
-                val description = (document["description"] as? String).orEmpty()
-                val storeName = (document["storeName"] as? String).orEmpty()
-                val publicShareStock = (document["publicShareStock"] as? Double) ?: 0.0
-                val id = (document["id"] as? String).orEmpty()
-                val mainShareHolder = (document["mainShareHolder"] as? String).orEmpty()
-                val dividendPayoutPeriod = (document["dividendPayoutPeriod"] as? Number)?.toInt() ?: 0
                 val fundingTarget = (document["fundingTarget"] as? Number)?.toInt() ?: 0
-                val grossProfit = (document["grossProfit"] as? Number)?.toInt() ?: 0
-                val data = Portfolio(id, storeName, address, province, imageUrl, storeType, logoUrl ,fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
-                portfolioList.add(data)
+                val totalInvested = sqliteDb.selectPurchaseAmountOfPortfolio(userPortfolio.portfolioID).totalInvested
+                if(totalInvested < fundingTarget) {
+                    val storeType = (document["storeType"] as? String).orEmpty()
+                    val address = (document["address"] as? String).orEmpty()
+                    val province = (document["province"] as? String).orEmpty()
+                    val imageUrl = (document["imageUrl"] as? String).orEmpty()
+                    val publisher = (document["publisher"] as? String).orEmpty()
+                    val logoUrl = (document["logoUrl"] as? String).orEmpty()
+                    val description = (document["description"] as? String).orEmpty()
+                    val storeName = (document["storeName"] as? String).orEmpty()
+                    val publicShareStock = (document["publicShareStock"] as? Double) ?: 0.0
+                    val id = (document["id"] as? String).orEmpty()
+                    val mainShareHolder = (document["mainShareHolder"] as? String).orEmpty()
+                    val dividendPayoutPeriod = (document["dividendPayoutPeriod"] as? Number)?.toInt() ?: 0
+                    val grossProfit = (document["grossProfit"] as? Number)?.toInt() ?: 0
+                    val data = Portfolio(id, storeName, address, province, imageUrl, storeType, logoUrl ,fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit)
+                    portfolioList.add(data)
+                }
             }
+            sqliteDb.close()
         }
         portfolioList
     } catch (e: Exception) {

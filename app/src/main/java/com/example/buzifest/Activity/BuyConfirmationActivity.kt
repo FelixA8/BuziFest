@@ -1,5 +1,6 @@
 package com.example.buzifest.Activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
@@ -7,10 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.buzifest.Data.UserPortfolio
 import com.example.buzifest.Data.generateUUID
-import com.example.buzifest.Helper.DatabaseHelper
-import com.example.buzifest.Helper.addExistingUserPortfolio
-import com.example.buzifest.Helper.addUserPortfolio
-import com.example.buzifest.Helper.currentEmail
+import com.example.buzifest.Helper.*
+import com.example.buzifest.MainActivity
 import com.example.buzifest.R
 
 class BuyConfirmationActivity : AppCompatActivity() {
@@ -54,6 +53,9 @@ class BuyConfirmationActivity : AppCompatActivity() {
         val ownershipPercent = (amount.toDouble() / currentPortfolio.fundingTarget.toDouble()) * 100
         ownershipPercentage.text = String.format("%.2f%%", ownershipPercent)
 
+        val sharedpreferences =
+            getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+
         // button
         button.setOnClickListener{
             val prevPortfolio = sqliteDb.checkUserPortfolioExist(portfolioID)
@@ -61,6 +63,7 @@ class BuyConfirmationActivity : AppCompatActivity() {
             if(prevPortfolio.id == "") {
                 val userPortfolio = UserPortfolio(generateUUID(), currentEmail, portfolioID, amount, 0)
                 addUserPortfolio(userPortfolio, this)
+                changeBalance(amount, currentEmail,"sub",sharedpreferences)
                 val intent = Intent(this, Home::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
@@ -68,6 +71,7 @@ class BuyConfirmationActivity : AppCompatActivity() {
             } else {
                 val userPortfolio = UserPortfolio(prevPortfolio.id, currentEmail, portfolioID, prevPortfolio.purchaseAmount+amount, 0)
                 addExistingUserPortfolio(userPortfolio, this)
+                changeBalance(amount, currentEmail,"sub",sharedpreferences)
                 val intent = Intent(this, Home::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
