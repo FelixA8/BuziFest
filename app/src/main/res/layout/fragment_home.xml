@@ -261,9 +261,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    android:id="@+id/tvHome_portfoliolist_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Portfolio List"
+                    android:text="Unfulfilled Portfolio"
                     android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/white"
                     android:textSize="20sp"
@@ -303,7 +304,7 @@
 
                         android:id="@+id/home_recyclerView_news"
                         android:layout_width="match_parent"
-                        android:layout_height="700dp"
+                        android:layout_height="650dp"
                         tools:listitem="@layout/home_custom_news_recycler"
                         android:overScrollMode="never"
                         android:nestedScrollingEnabled="false"

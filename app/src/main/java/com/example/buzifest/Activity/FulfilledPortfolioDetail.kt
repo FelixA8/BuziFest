@@ -47,7 +47,7 @@ class FulfilledPortfolioDetail : AppCompatActivity(){
         binding.fulfilledTotalInvestor.text = portfolioData.totalInvestor.toString()
         binding.fulfilledPurchaseAmount.text = "Rp ${formatNumber(userPortfolio.purchaseAmount)}"
         binding.fulfilledOwnershipPercentage.text = String.format("%.2f%%", ownershipPercent)
-        binding.fulfilledEarnings.text = "Rp ${formatNumber(userPortfolio.totalProfit)}"
+        binding.fulfilledEarnings.text = "Rp ${formatNumber(userPortfolio.earnings)}"
         binding.fulfilledDescription.text = currentPortfolio.description
         binding.fulfilledOwnershipPublicSharedStock.text = "${currentPortfolio.publicShareStock}%"
         binding.fulfilledOwnershipFundingTarget.text = "Rp ${formatNumber(currentPortfolio.fundingTarget)}"

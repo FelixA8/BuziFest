@@ -7,7 +7,7 @@ data class UserPortfolio(
     val userEmail:String,
     var portfolioID:String,
     val purchaseAmount:Int,
-    val totalProfit:Int
+    val earnings:Int
 )
 
 

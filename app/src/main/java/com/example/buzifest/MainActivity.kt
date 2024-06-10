@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         const val IDCARDNUMBER_KEY = "idcardnumber_key"
         const val PHONENUMBER_KEY = "phonenumber_key"
         const val BALANCE_KEY = "balance_key"
-        const val ASSET_KEY = "asset_key"
+        const val EARNINGS_KEY = "earnings_key"
         const val ADDRESS_KEY = "address_key"
     }
     private lateinit var auth: FirebaseAuth

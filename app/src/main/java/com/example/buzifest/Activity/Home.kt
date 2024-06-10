@@ -56,7 +56,7 @@ class Home : AppCompatActivity() {
             editor.putString(MainActivity.IDCARDNUMBER_KEY, userData?.idCardNumber)
             editor.putString(MainActivity.PHONENUMBER_KEY, userData?.phoneNumber)
             editor.putString(MainActivity.BALANCE_KEY, userData?.balance.toString())
-            editor.putString(MainActivity.ASSET_KEY, userData?.asset.toString())
+            editor.putString(MainActivity.EARNINGS_KEY, userData?.earnings.toString())
             editor.putString(MainActivity.ADDRESS_KEY, userData?.address)
             editor.apply()
             setUserDetails(sharedpreferences)
@@ -152,7 +152,7 @@ class Home : AppCompatActivity() {
         currentIdCardNumber = sharedpreferences.getString(MainActivity.IDCARDNUMBER_KEY, null)!!
         currentPhoneNumber = sharedpreferences.getString(MainActivity.PHONENUMBER_KEY, null)!!
         currentBalance = sharedpreferences.getString(MainActivity.BALANCE_KEY, null).toString().toInt()
-        currentAsset = sharedpreferences.getString(MainActivity.ASSET_KEY, null).toString().toInt()
+        currentEarnings = sharedpreferences.getString(MainActivity.EARNINGS_KEY, null).toString().toInt()
         currentAddress = sharedpreferences.getString(MainActivity.ADDRESS_KEY, null)!!
         currentEmail = sharedpreferences.getString(MainActivity.EMAIL_KEY, null)!!
         println("balance: ${currentBalance}")

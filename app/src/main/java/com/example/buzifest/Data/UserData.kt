@@ -8,6 +8,6 @@ data class User(
     val idCardNumber:String,
     val phoneNumber:String,
     val balance:Int,
-    val asset:Int,
+    val earnings:Int,
     val address:String,
 )

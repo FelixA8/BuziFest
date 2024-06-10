@@ -8,5 +8,5 @@ public var currentLastName = ""
 public var currentIdCardNumber = ""
 public var currentPhoneNumber = ""
 public var currentBalance = 0
-public var currentAsset = 0
+public var currentEarnings = 0
 public var currentAddress = ""

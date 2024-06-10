@@ -15,7 +15,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createPortfolioTableQuery = "CREATE TABLE portfolios(id TEXT PRIMARY KEY, storeName TEXT NOT NULL, address TEXT NOT NULL, province TEXT NOT NULL, image TEXT NOT NULL, storeType TEXT NOT NULL, logo TEXT NOT NULL, fundingTarget INTEGER NOT NULL, description TEXT NOT NULL, publicShareStock REAL NOT NULL, dividendPayoutPeriod INTEGER NOT NULL, mainShareHolder TEXT NOT NULL, publisher TEXT NOT NULL, grossProfit INTEGER NOT NULL)"
-        val createUserPortfolioTable = "CREATE TABLE userPortfolios (id TEXT PRIMARY KEY, userEmail TEXT NOT NULL, portfolioID TEXT NOT NULL, purchaseAmount INTEGER NOT NULL, totalProfit INTEGER NOT NULL, FOREIGN KEY (portfolioID) REFERENCES portfolios(id))"
+        val createUserPortfolioTable = "CREATE TABLE userPortfolios (id TEXT PRIMARY KEY, userEmail TEXT NOT NULL, portfolioID TEXT NOT NULL, purchaseAmount INTEGER NOT NULL, earnings INTEGER NOT NULL, FOREIGN KEY (portfolioID) REFERENCES portfolios(id))"
         val createNewsTable = "CREATE TABLE news (id TEXT PRIMARY KEY, newsLinkUrl TEXT NOT NULL, newsTitle TEXT NOT NULL, newsImageUrl TEXT NOT NULL)"
         db?.execSQL(createPortfolioTableQuery)
         db?.execSQL(createUserPortfolioTable)
@@ -61,7 +61,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put("portfolioID", userPortfolio.portfolioID)
             put("userEmail", userPortfolio.userEmail)
             put("purchaseAmount", userPortfolio.purchaseAmount)
-            put("totalProfit", userPortfolio.totalProfit)
+            put("earnings", userPortfolio.earnings)
         }
         db.insert("userPortfolios",null, values)
         db.close();
@@ -88,9 +88,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val portfolioID = cursor.getString(cursor.getColumnIndexOrThrow("portfolioID"))
             val userEmail = cursor.getString(cursor.getColumnIndexOrThrow("userEmail"))
             val purchaseAmount = cursor.getInt(cursor.getColumnIndexOrThrow("purchaseAmount"))
-            val totalProfit = cursor.getInt(cursor.getColumnIndexOrThrow("totalProfit"))
+            val earnings = cursor.getInt(cursor.getColumnIndexOrThrow("earnings"))
             if(portfolioID == currentPortfolioID) {
-                return UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit);
+                return UserPortfolio(id, userEmail, portfolioID, purchaseAmount, earnings);
             }
         }
         cursor.close()
@@ -110,6 +110,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
         return purchaseAmount
     }
+
 
     fun updateUserPortfolio(currentID: String, amount:Int): Boolean  {
         val db = this.writableDatabase
@@ -164,8 +165,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val portfolioID = cursor.getString(cursor.getColumnIndexOrThrow("portfolioID"))
             val userEmail = cursor.getString(cursor.getColumnIndexOrThrow("userEmail"))
             val purchaseAmount = cursor.getInt(cursor.getColumnIndexOrThrow("purchaseAmount"))
-            val totalProfit = cursor.getInt(cursor.getColumnIndexOrThrow("totalProfit"))
-            val tempUserPortfolio = UserPortfolio(id,userEmail,portfolioID,purchaseAmount,totalProfit)
+            val earnings = cursor.getInt(cursor.getColumnIndexOrThrow("earnings"))
+            val tempUserPortfolio = UserPortfolio(id,userEmail,portfolioID,purchaseAmount,earnings)
             userPortfolioList.add(tempUserPortfolio)
         }
         cursor.close()
@@ -236,7 +237,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         var totalValue = 0
         var totalResult = 0
         val queryTotalValue = "SELECT SUM(purchaseAmount) AS totalValue from userPortfolios WHERE userEmail = ?"
-        val queryTotalResult = "SELECT SUM(totalProfit) AS totalValue from userPortfolios WHERE userEmail = ?"
+        val queryTotalResult = "SELECT SUM(earnings) AS totalValue from userPortfolios WHERE userEmail = ?"
         val cursorValue = db.rawQuery(queryTotalValue, arrayOf(userEmail))
         while (cursorValue.moveToNext()) {
             totalValue = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalValue"))
@@ -251,6 +252,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return ValueSummaryData(totalValue, totalResult)
     }
 
+
+
     fun selectSpecificUserPortfolio(portfolioID:String):UserPortfolio {
         val db = readableDatabase
         lateinit var userPortfolio:UserPortfolio
@@ -261,9 +264,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val portfolioID = cursorValue.getString(cursorValue.getColumnIndexOrThrow("portfolioID"))
             val userEmail = cursorValue.getString(cursorValue.getColumnIndexOrThrow("userEmail"))
             val purchaseAmount = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("purchaseAmount"))
-            val totalProfit = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalProfit"))
+            val earnings = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("earnings"))
 
-            userPortfolio = UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit)
+            userPortfolio = UserPortfolio(id, userEmail, portfolioID, purchaseAmount, earnings)
         }
         cursorValue.close()
         db.close()
@@ -280,9 +283,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val portfolioID = cursorValue.getString(cursorValue.getColumnIndexOrThrow("portfolioID"))
             val userEmail = cursorValue.getString(cursorValue.getColumnIndexOrThrow("userEmail"))
             val purchaseAmount = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("purchaseAmount"))
-            val totalProfit = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("totalProfit"))
+            val earnings = cursorValue.getInt(cursorValue.getColumnIndexOrThrow("earnings"))
 
-            userPortfolioList.add(UserPortfolio(id, userEmail, portfolioID, purchaseAmount, totalProfit))
+            userPortfolioList.add(UserPortfolio(id, userEmail, portfolioID, purchaseAmount, earnings))
         }
         cursorValue.close()
         db.close()
@@ -317,10 +320,26 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return portfolioList
     }
 
+    fun clearUserEarnings(currentEmail: String){
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put("earnings", 0)
+        try {
+            val success = db.update("userPortfolios", contentValues, "userEmail = ?", arrayOf(currentEmail))
+            println("hmm: ${success}")
+            success != -1
+        } catch (e: Exception) {
+            println("hmm: ${e}")
+            e.printStackTrace()
+            false
+        } finally {
+            db.close()
+        }
+    }
+
     fun selectSpecificPortfolio(portfolioID: String):Portfolio {
         val db = readableDatabase
         val query = "SELECT * from portfolios WHERE id = ?"
-        val query1 = "SELECT * from portfolios"
         lateinit var tempPortfolio: Portfolio
         val cursor = db.rawQuery(query, arrayOf(portfolioID))
 

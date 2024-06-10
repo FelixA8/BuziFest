@@ -25,10 +25,8 @@ class TopUpActivity : AppCompatActivity() {
             val topUpAmount = binding.topupEtAmount.text.toString().toInt()
             if(topUpAmount > 0) {
                 changeBalance(topUpAmount, currentEmail, "add", sharedpreferences)
-                val intent = Intent(this, Home::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                finish()
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
-                startActivity(intent)
             } else {
                 Toast.makeText(this, "Please Input a valid Value!", Toast.LENGTH_SHORT).show()
             }

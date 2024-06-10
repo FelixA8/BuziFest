@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.buzifest.Data.*
 import com.example.buzifest.MainActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.tasks.await
 
@@ -29,8 +30,8 @@ suspend fun getUserFromFirestoreByEmail(email: String): User? {
                 val idCardNumber = (userData["idCardNumber"] as? String).orEmpty()
                 val address = (userData["address"] as? String).orEmpty()
                 val balance = (userData["balance"] as? Number)?.toInt() ?: 0
-                val asset = (userData["asset"] as? Number)?.toInt() ?: 0
-                User(username, firstName, lastName, email, idCardNumber, phoneNumber, balance, asset, address)
+                val earnings = (userData["earnings"] as? Number)?.toInt() ?: 0
+                User(username, firstName, lastName, email, idCardNumber, phoneNumber, balance, earnings, address)
             } else {
                 null // No data retrieved
             }
@@ -75,11 +76,23 @@ public fun addPortfolio(portfolio: Portfolio, context: Context){
         }
 }
 
-public fun changeUserAsset(amount:Int, email:String) {
-    db.collection("users").document(email).update("asset", amount).addOnSuccessListener {
-        println("User asset successfully updated!")
-    }.addOnFailureListener { e ->
-        println("Error updating user email: $e")
+public fun withdrawUserEarnings(currentEmail:String) {
+    db.collection("userPortfolios").get().addOnSuccessListener {
+        querySnapshot ->
+            for(document in querySnapshot.documents) {
+                val email = (document["email"] as? String).orEmpty()
+                println("email: ${email} | ${currentEmail}")
+                if(email == currentEmail) {
+                    val updates = mapOf("earnings" to 0)
+                    db.collection("userPortfolios").document(document.id).set(updates, SetOptions.merge()).addOnSuccessListener {
+                        // Successfully updated
+                        println("Document ${document.id} updated successfully.")
+                    }.addOnFailureListener { e ->
+                        // Failed to update
+                        println("Error updating document ${document.id}: $e")
+                    }
+                }
+            }
     }
 }
 
@@ -90,6 +103,7 @@ public fun changeBalance(amount:Int, email: String,operation:String,sharedPrefer
             println("User balance successfully updated!")
             editor.putString(MainActivity.BALANCE_KEY, (currentBalance + amount).toString())
             currentBalance += amount
+            editor.apply()
         }.addOnFailureListener { e ->
             println("Error updating user email: $e")
         }
@@ -98,7 +112,7 @@ public fun changeBalance(amount:Int, email: String,operation:String,sharedPrefer
             println("User balance successfully updated!")
             editor.putString(MainActivity.BALANCE_KEY, (currentBalance - amount).toString())
             currentBalance -= amount
-
+            editor.apply()
         }.addOnFailureListener { e ->
             println("Error updating user email: $e")
         }
@@ -112,7 +126,7 @@ public fun addExistingUserPortfolio(userPortfolio: UserPortfolio, context: Conte
         "email" to userPortfolio.userEmail,
         "portfolioID" to userPortfolio.portfolioID,
         "purchaseAmount" to userPortfolio.purchaseAmount,
-        "totalProfit" to userPortfolio.totalProfit
+        "earnings" to userPortfolio.earnings
     )
     val sqliteDb = DatabaseHelper(context)
     val output = sqliteDb.updateUserPortfolio(userPortfolio.id, userPortfolio.purchaseAmount)
@@ -131,7 +145,7 @@ public fun addUserPortfolio(userPortfolio: UserPortfolio, context: Context) {
             "email" to userPortfolio.userEmail,
             "portfolioID" to userPortfolio.portfolioID,
             "purchaseAmount" to userPortfolio.purchaseAmount,
-            "totalProfit" to userPortfolio.totalProfit
+            "earnings" to userPortfolio.earnings
         )
         val sqliteDB = DatabaseHelper(context = context)
         sqliteDB.insertUserPortfolios(userPortfolio)
@@ -237,8 +251,8 @@ suspend fun getAllUserPortfoliosData(context: Context): List<UserPortfolio> {
             val email = (document["email"] as? String).orEmpty()
             val portfolioID = (document["portfolioID"] as? String).orEmpty()
             val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
-            val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
-            val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
+            val earnings = (document["earnings"] as? Number)?.toInt() ?: 0
+            val data = UserPortfolio(id, email, portfolioID, purchaseAmount, earnings)
             sqliteDB.insertUserPortfolios(data)
             userPortfolios.add(data)
         }
@@ -281,8 +295,8 @@ suspend fun getAllCurrentUserPortfoliosData(currentEmail:String): List<UserPortf
                 val id = (document["id"] as? String).orEmpty()
                 val portfolioID = (document["portfolioID"] as? String).orEmpty()
                 val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
-                val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
-                val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
+                val earnings = (document["earnings"] as? Number)?.toInt() ?: 0
+                val data = UserPortfolio(id, email, portfolioID, purchaseAmount, earnings)
                 userPortfolios.add(data)
             }
         }
@@ -305,8 +319,8 @@ suspend fun getUserPortfoliosPortofolio(context: Context):List<Portfolio>{
                 val id = (document["id"] as? String).orEmpty()
                 val portfolioID = (document["portfolioID"] as? String).orEmpty()
                 val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
-                val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
-                val data = UserPortfolio(id, email, portfolioID, purchaseAmount, totalProfit)
+                val earnings = (document["earnings"] as? Number)?.toInt() ?: 0
+                val data = UserPortfolio(id, email, portfolioID, purchaseAmount, earnings)
                 userPortfolios.add(data)
             }
         }
@@ -353,9 +367,9 @@ suspend fun getCurrentUserValueData(currentEmail:String): ValueSummaryData {
             val email = (document["email"] as? String).orEmpty()
             if(email == currentEmail) {
                 val purchaseAmount = (document["purchaseAmount"] as? Number)?.toInt() ?: 0
-                val totalProfit = (document["totalProfit"] as? Number)?.toInt() ?: 0
+                val earnings = (document["earnings"] as? Number)?.toInt() ?: 0
                 totalValue+=purchaseAmount
-                totalEarning+=totalProfit
+                totalEarning+=earnings
             }
         }
         println("value: ${totalValue} ${totalEarning}")

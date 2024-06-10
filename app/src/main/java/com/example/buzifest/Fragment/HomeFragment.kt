@@ -143,6 +143,12 @@ class HomeFragment : Fragment() {
         if(userPortfolioList.isEmpty()) {
             lifecycleScope.launch {
                 val currList = getUserPortfoliosPortofolio(requireContext())
+                if(currList.isEmpty()) {
+                    binding.tvHomePortfoliolistTitle.text = "Start your journey!"
+                }
+                if(currList.isEmpty() && currentBalance > 0){
+                    binding.tvHomePortfoliolistTitle.text = "Own your first business!"
+                }
                 portfolioAdapter = PortfolioAdapter(currList, requireContext(), viewLifecycleOwner)
                 portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 portfolioRecyclerView.adapter = portfolioAdapter
@@ -151,6 +157,10 @@ class HomeFragment : Fragment() {
             portfolioAdapter = PortfolioAdapter(userPortfolioList, requireContext(), viewLifecycleOwner)
             portfolioRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             portfolioRecyclerView.adapter = portfolioAdapter
+        }
+
+        if(userPortfolioList.isEmpty() && currentBalance > 0){
+            binding.tvHomePortfoliolistTitle.text = "Own your first business!"
         }
 
         if(summaryValue.totalValue == 0 && summaryValue.totalEarning == 0) {
