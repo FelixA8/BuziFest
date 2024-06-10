@@ -54,6 +54,7 @@
                 android:paddingLeft="15sp"
                 android:textColorHint="#BDBDBF"
                 android:textAppearance="@style/CustomEditTextHintLoginRegister"
+                android:textColor="@color/white"
                 />
 
             <EditText
@@ -68,6 +69,7 @@
                 android:hint="Password"
                 android:textAppearance="@style/CustomEditTextHintLoginRegister"
                 android:textColorHint="#BDBDBF"
+                android:textColor="@color/white"
                 />
 
             <Button
