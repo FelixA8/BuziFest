@@ -46,21 +46,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="150sp"
-            android:layout_height="90sp"
-            android:background="@drawable/bg_rounded_gray"
+            android:layout_height="70sp"
+            android:background="@drawable/bg_rounded_blacktransparant"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf = "@+id/portofolio_asset_linear"
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="60sp"
+                android:layout_height="20sp"
                 android:text="Balance"
                 android:fontFamily="@font/roboto_medium"
                 android:textSize="12sp"
-                android:textColor="@color/white"
+                android:textColor="#E5AC17"
                 android:layout_marginLeft="10sp"
-                android:layout_marginTop="5sp"/>
+                android:layout_marginTop="5sp"
+                android:textAlignment="center"
+                android:background="@drawable/portofolio_menu_balance_new"/>
+
+
 
             <TextView
                 android:id="@+id/portofolio_balance"
@@ -69,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="15sp"
-                android:textColor="@color/green"
+                android:textColor="@color/white"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
                 android:layout_marginBottom="0sp"/>
@@ -83,21 +87,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/portofolio_balance_linear"
             android:layout_width="150sp"
-            android:layout_height="90sp"
-            android:background="@drawable/bg_rounded_gray"
+            android:layout_height="70sp"
+            android:background="@drawable/bg_rounded_blacktransparant"
             android:orientation="vertical"
             android:id="@+id/portofolio_asset_linear"
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="50sp"
+                android:layout_height="20sp"
                 android:text="Asset"
                 android:fontFamily="@font/roboto_medium"
                 android:textSize="12sp"
-                android:textColor="@color/white"
+                android:textColor="#966CAA"
                 android:layout_marginLeft="10sp"
-                android:layout_marginTop="5sp"/>
+                android:layout_marginTop="5sp"
+                android:textAlignment="center"
+                android:background="@drawable/portfolio_menu_asset"/>
 
             <TextView
                 android:id="@+id/portofolio_asset"
@@ -106,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="15sp"
-                android:textColor="@color/green"
+                android:textColor="@color/white"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
                 android:layout_marginBottom="0sp"/>
@@ -120,21 +126,23 @@
             app:layout_constraintTop_toBottomOf="@id/portofolio_balance_linear"
             android:layout_marginTop="17sp"
             android:layout_width="150sp"
-            android:layout_height="90sp"
-            android:background="@drawable/bg_rounded_gray"
+            android:layout_height="70sp"
+            android:background="@drawable/bg_rounded_blacktransparant"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/portofolio_earnings_linear"
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="90sp"
+                android:layout_height="20sp"
                 android:text="Portfolio Value"
                 android:fontFamily="@font/roboto_medium"
                 android:textSize="12sp"
-                android:textColor="@color/white"
+                android:textColor="#AA9858"
                 android:layout_marginLeft="10sp"
-                android:layout_marginTop="5sp"/>
+                android:layout_marginTop="5sp"
+                android:textAlignment="center"
+                android:background="@drawable/portfolio_menu_portfoliovalue"/>
 
             <TextView
                 android:id="@+id/portofolio_portfolio_value"
@@ -143,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="15sp"
-                android:textColor="@color/green"
+                android:textColor="@color/white"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
                 android:layout_marginBottom="0sp"/>
@@ -157,20 +165,22 @@
             app:layout_constraintTop_toBottomOf="@id/portofolio_asset_linear"
             android:layout_marginTop="17sp"
             android:layout_width="150sp"
-            android:layout_height="90sp"
-            android:background="@drawable/bg_rounded_gray"
+            android:layout_height="70sp"
+            android:background="@drawable/bg_rounded_blacktransparant"
             android:orientation="vertical"
             app:layout_constraintStart_toEndOf="@id/portofolio_value_linear"
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="60sp"
+                android:layout_height="20sp"
                 android:text="Earnings"
                 android:fontFamily="@font/roboto_medium"
                 android:textSize="12sp"
-                android:textColor="@color/white"
+                android:textColor="#617BDA"
                 android:layout_marginLeft="10sp"
+                android:textAlignment="center"
+                android:background="@drawable/potfolio_menu_earnings"
                 android:layout_marginTop="5sp"/>
 
             <TextView
@@ -180,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="15sp"
-                android:textColor="@color/green"
+                android:textColor="@color/white"
                 android:text="Rp 384.293,07"
                 android:layout_marginLeft="10sp"
                 android:layout_marginBottom="0sp"/>

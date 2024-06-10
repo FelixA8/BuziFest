@@ -246,7 +246,7 @@
                         <ImageView
                             android:layout_width="70sp"
                             android:layout_height="70sp"
-                            android:src="@drawable/home_menu_settings" />
+                            android:src="@drawable/home_menu_settings_new" />
 
                         <TextView
                             android:layout_width="match_parent"
