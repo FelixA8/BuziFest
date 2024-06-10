@@ -85,7 +85,7 @@ class PortfolioAdapter(private val portfolioList: List<Portfolio>, context:Conte
             .into(holder.portofolioLogo)
 
         holder.portfolioName.text = currentItem.storeName
-        holder.portfolioRemaining.text = "Rp ${formatNumber(currentItem.fundingTarget)}"
+        holder.portfolioRemaining.text = "${formatNumber(currentItem.fundingTarget)}" + "remaining"
         holder.portfolioGrossProfit.text = "Rp ${formatNumber(currentItem.grossProfit)}"
         holder.portfolioSharesReleased.text = "${currentItem.publicShareStock}%"
     }
