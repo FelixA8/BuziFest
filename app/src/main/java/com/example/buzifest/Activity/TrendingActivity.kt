@@ -2,6 +2,7 @@ package com.example.buzifest.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.buzifest.Adapter.PortofolioPageAdapter
 import com.example.buzifest.Adapter.TrendingAdapter
@@ -11,6 +12,8 @@ import com.example.buzifest.R
 import com.example.buzifest.databinding.ActivityTrendingBinding
 
 class TrendingActivity : AppCompatActivity() {
+
+    private lateinit var backButton: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         val binding = ActivityTrendingBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -23,6 +26,13 @@ class TrendingActivity : AppCompatActivity() {
         val portfolioListAdapter = TrendingAdapter(portfolioList, this)
         binding.trendingRecycler.layoutManager = LinearLayoutManager(this)
         binding.trendingRecycler.adapter = portfolioListAdapter
+
+        backButton= binding.detailBackButton
+
+        backButton.setOnClickListener {
+            finish()
+        }
+
 
         binding.trendingRecycler
     }
