@@ -110,10 +110,17 @@ class HomeFragment : Fragment() {
         val allUserPortfolioList = sqliteDb.selectAllUserPortfolios()
         val userPortfolioList = sqliteDb.selectUserPortfoliosPortofolio(email!!)
         var summaryValue = sqliteDb.selectUserSummaryValue(email)
+        val upcomingPortfolioList = sqliteDb.selectAllUpcomingPortfolio()
 
         if(portfolioList.isEmpty()) {
             lifecycleScope.launch {
                 getPortfoliosData(requireContext()) //CallPortfolioData and save it to sqlite.
+            }
+        }
+
+        if(upcomingPortfolioList.isEmpty()) {
+            lifecycleScope.launch {
+                getUpcomingPortfoliosData(requireContext())
             }
         }
 
@@ -177,6 +184,10 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.homeMenuUpcoming.setOnClickListener {
+            val intent = Intent(context, UpcomingActivity::class.java)
+            startActivity(intent)
+        }
         //Activate The Drawer
         binding.profileImageView.setOnClickListener {
             (activity as? Home)?.openDrawer()

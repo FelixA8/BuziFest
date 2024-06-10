@@ -56,6 +56,7 @@ class BuyConfirmationActivity : AppCompatActivity() {
         val sharedpreferences =
             getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
 
+        
         // button
         button.setOnClickListener{
             val prevPortfolio = sqliteDb.checkUserPortfolioExist(portfolioID, currentEmail)

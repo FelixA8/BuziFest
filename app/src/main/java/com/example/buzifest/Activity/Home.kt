@@ -112,10 +112,6 @@ class Home : AppCompatActivity() {
     private fun setupDrawerNavigation() {
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_about -> {
-                    loadFragment(HomeFragment())
-                    true
-                }
                 R.id.nav_seller -> {
                     val intent = Intent(this, ApplicationFormActivity::class.java)
                     startActivity(intent)

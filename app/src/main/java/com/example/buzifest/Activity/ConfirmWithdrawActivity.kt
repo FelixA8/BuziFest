@@ -23,6 +23,10 @@ class ConfirmWithdrawActivity : AppCompatActivity() {
 
         val earnings = sqliteDb.selectUserSummaryValue(currentEmail).totalEarning
         val status = intent.getStringExtra("status").toString()
+
+        binding.withdrawConfirmationBackButton.setOnClickListener {
+            finish()
+        }
         if(status == "withdraw_balance") {
             binding.withdrawConfirmationTvOutOf.text = "Out of Rp ${currentBalance}"
             binding.withdrawConfirmationContinue.setOnClickListener {

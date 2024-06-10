@@ -18,7 +18,7 @@
         >
 
         <ImageView
-            android:id="@+id/buy_back_button"
+            android:id="@+id/withdraw_confirmation_back_button"
             android:layout_width="30sp"
             android:layout_height="30sp"
             android:src="@drawable/detail_back_button"
@@ -68,6 +68,7 @@
         android:layout_marginTop="30sp"/>
 
     <EditText
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="35sp"
         android:background="@drawable/login_custom_edittext"

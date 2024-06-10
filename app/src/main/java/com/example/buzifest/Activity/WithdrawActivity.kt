@@ -34,5 +34,8 @@ class WithdrawActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+        binding.withdrawBackButton.setOnClickListener {
+            finish()
+        }
     }
 }

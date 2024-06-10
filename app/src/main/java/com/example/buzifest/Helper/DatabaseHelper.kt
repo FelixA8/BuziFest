@@ -1,5 +1,6 @@
 package com.example.buzifest.Helper
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -17,19 +18,36 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val createPortfolioTableQuery = "CREATE TABLE portfolios(id TEXT PRIMARY KEY, storeName TEXT NOT NULL, address TEXT NOT NULL, province TEXT NOT NULL, image TEXT NOT NULL, storeType TEXT NOT NULL, logo TEXT NOT NULL, fundingTarget INTEGER NOT NULL, description TEXT NOT NULL, publicShareStock REAL NOT NULL, dividendPayoutPeriod INTEGER NOT NULL, mainShareHolder TEXT NOT NULL, publisher TEXT NOT NULL, grossProfit INTEGER NOT NULL)"
         val createUserPortfolioTable = "CREATE TABLE userPortfolios (id TEXT PRIMARY KEY, userEmail TEXT NOT NULL, portfolioID TEXT NOT NULL, purchaseAmount INTEGER NOT NULL, earnings INTEGER NOT NULL, FOREIGN KEY (portfolioID) REFERENCES portfolios(id))"
         val createNewsTable = "CREATE TABLE news (id TEXT PRIMARY KEY, newsLinkUrl TEXT NOT NULL, newsTitle TEXT NOT NULL, newsImageUrl TEXT NOT NULL)"
+        val createUpcomingPortfolioTable = "CREATE TABLE upcomingPortfolios (id TEXT PRIMARY KEY, storeName TEXT NOT NULL, storeImage TEXT NOT NULL, logo TEXT NOT NULL, daysLeft INTEGER NOT NULL)"
         db?.execSQL(createPortfolioTableQuery)
         db?.execSQL(createUserPortfolioTable)
         db?.execSQL(createNewsTable)
+        db?.execSQL(createUpcomingPortfolioTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         val dropNewsTableQuery = "DROP TABLE IF EXISTS news"
         val dropTransactionTableQuery = "DROP TABLE IF EXISTS portfolios"
         val dropDollTableQuery = "DROP TABLE IF EXISTS userPortfolios"
+        val dropUpcomingPortfolioTableQuery = "DROP TABLE IF EXISTS upcomingPortfolios"
         db?.execSQL(dropNewsTableQuery)
         db?.execSQL(dropTransactionTableQuery)
         db?.execSQL(dropDollTableQuery)
+        db?.execSQL(dropUpcomingPortfolioTableQuery)
         onCreate(db)
+    }
+
+    fun insertUpcomingPortfolio(upcomingPortfolio: UpcomingPortfolio){
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("id", upcomingPortfolio.id)
+            put("storeName", upcomingPortfolio.storeName)
+            put("storeImage", upcomingPortfolio.storeImage)
+            put("logo", upcomingPortfolio.logo)
+            put("daysLeft", upcomingPortfolio.daysLeft)
+        }
+        db.insert("upcomingPortfolios",null, values)
+        db.close();
     }
 
     fun insertPortfolio(portfolio: Portfolio) {
@@ -98,6 +116,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return UserPortfolio("","","",0,0)
     }
 
+    fun selectAllUpcomingPortfolio():ArrayList<UpcomingPortfolio> {
+        val db = readableDatabase
+        val upcomingPortfolioList:ArrayList<UpcomingPortfolio> = arrayListOf()
+        val query = "SELECT * from upcomingPortfolios"
+        val cursor = db.rawQuery(query, null)
+        while(cursor.moveToNext()) {
+            val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
+            val storeImage = cursor.getString(cursor.getColumnIndexOrThrow("storeImage"))
+            val storeName = cursor.getString(cursor.getColumnIndexOrThrow("storeName"))
+            val logo = cursor.getString(cursor.getColumnIndexOrThrow("logo"))
+            val daysLeft = cursor.getInt(cursor.getColumnIndexOrThrow("daysLeft"))
+            upcomingPortfolioList.add(UpcomingPortfolio(id, storeName, storeImage, logo, daysLeft))
+        }
+        cursor.close()
+        db.close()
+        return upcomingPortfolioList
+    }
+
+    @SuppressLint("SuspiciousIndentation")
     fun selectTrendingPortfolio():ArrayList<TrendingPortfolio> {
         val db = readableDatabase
         val portfolioList:ArrayList<TrendingPortfolio> = ArrayList()
@@ -404,6 +441,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DELETE FROM portfolios")
         db.execSQL("DELETE FROM userPortfolios")
         db.execSQL("DELETE FROM news")
+        db.execSQL("DELETE FROM upcomingPortfolios")
         println("deleted!!")
         // Close the database connection
         db.close()

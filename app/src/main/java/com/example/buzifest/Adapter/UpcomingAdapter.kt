@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.buzifest.Data.Portfolio
+import com.example.buzifest.Data.UpcomingPortfolio
 import com.example.buzifest.R
 
-class UpcomingAdapter(private val upcomingList: List<Portfolio>):RecyclerView.Adapter<UpcomingAdapter.ViewHolder>() {
+class UpcomingAdapter(private val upcomingList: List<UpcomingPortfolio>):RecyclerView.Adapter<UpcomingAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val upcomingImage = itemView.findViewById<ImageView>(R.id.upcoming_recycler_image)
@@ -28,6 +30,14 @@ class UpcomingAdapter(private val upcomingList: List<Portfolio>):RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val currentItem = upcomingList[position]
+        Glide.with(holder.itemView.context)
+            .load(currentItem.logo)
+            .into(holder.upcomingLogo)
+        Glide.with(holder.itemView.context)
+            .load(currentItem.storeImage)
+            .into(holder.upcomingImage)
+        holder.upcomingDays.text = "${currentItem.daysLeft} days"
+        holder.upcomingName.text = currentItem.storeName
     }
 }

@@ -44,6 +44,27 @@ suspend fun getUserFromFirestoreByEmail(email: String): User? {
     }
 }
 
+public fun addUpcomingPortfolio(upcomingPortfolio: UpcomingPortfolio, context: Context) {
+    val value = hashMapOf(
+        "id" to upcomingPortfolio.id,
+        "storeName" to upcomingPortfolio.storeName,
+        "storeImage" to upcomingPortfolio.storeImage,
+        "logo" to upcomingPortfolio.logo,
+        "daysLeft" to upcomingPortfolio.daysLeft,)
+    val sqliteDB = DatabaseHelper(context = context)
+    sqliteDB.insertUpcomingPortfolio(upcomingPortfolio)
+    sqliteDB.close()
+    db.collection("upcomingPortfolios").document(upcomingPortfolio.id)
+        .set(value)
+        .addOnSuccessListener {
+            // Successfully added user to Firestore
+        }
+        .addOnFailureListener { e ->
+            // Failed to add user to Firestore
+            print(e)
+        }
+}
+
 //Add New Portfolio
 public fun addPortfolio(portfolio: Portfolio, context: Context){
     val value = hashMapOf(
@@ -203,6 +224,30 @@ suspend fun getNewsData(context: Context): List<News> {
         }
         sqliteDB.close()
         news
+    } catch (e: Exception) {
+        println("Error getting documents: $e")
+        emptyList()
+    }
+}
+
+suspend fun getUpcomingPortfoliosData(context: Context):List<UpcomingPortfolio> {
+    val db = FirebaseFirestore.getInstance()
+    val upcomingPortfolioList = mutableListOf<UpcomingPortfolio>()
+    val sqliteDB = DatabaseHelper(context = context)
+    return try {
+        val documents = db.collection("upcomingPortfolios").get().await()
+        for (document in documents) {
+            val id = (document["id"] as? String).orEmpty()
+            val storeName = (document["storeName"] as? String).orEmpty()
+            val storeImage = (document["storeImage"] as? String).orEmpty()
+            val logo = (document["logo"] as? String).orEmpty()
+            val daysLeft = (document["daysLeft"] as? Number)?.toInt() ?: 0
+            val data = UpcomingPortfolio(id, storeName, storeImage, logo, daysLeft)
+            upcomingPortfolioList.add(data)
+            sqliteDB.insertUpcomingPortfolio(data)
+        }
+        sqliteDB.close()
+        upcomingPortfolioList
     } catch (e: Exception) {
         println("Error getting documents: $e")
         emptyList()
