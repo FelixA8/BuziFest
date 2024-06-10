@@ -43,7 +43,7 @@ class PortofolioPageAdapter(private val userPortofolioList: List<UserPortfolio>,
         val sqlitedb = DatabaseHelper(context)
         val currentItem = userPortofolioList[position]
         val portfolio = sqlitedb.selectSpecificPortfolio(currentItem.portfolioID)
-        holder.portfolioEarnings.text = formatNumber(currentItem.earnings+currentItem.purchaseAmount)
+        holder.portfolioEarnings.text = formatNumber(currentItem.totalProfit+currentItem.purchaseAmount)
         holder.portofolioName.text = portfolio.storeName
         holder.portofolioPercentage.text = String.format("%.2f",(currentItem.earnings.toDouble()/currentItem.purchaseAmount.toDouble())*100.0)
         holder.itemView.setOnClickListener {
