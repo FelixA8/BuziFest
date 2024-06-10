@@ -78,7 +78,8 @@
         android:paddingHorizontal="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/topup_tvOutOf"

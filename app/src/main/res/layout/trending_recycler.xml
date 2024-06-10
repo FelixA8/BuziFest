@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90sp"
+    android:layout_height="105sp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/trending_recycler_layout"
     app:cardCornerRadius="15sp"
@@ -25,12 +25,12 @@
 
         <ImageView
             android:id="@+id/trending_recyler_point"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
             android:src="@drawable/home_portofolio_point"
             app:layout_constraintStart_toEndOf="@id/portofolio_list_linear"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15sp"
             android:layout_marginLeft="12sp"/>
 
         <TextView
@@ -43,8 +43,34 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/trending_recyler_point"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15sp"
             android:layout_marginLeft="10sp"/>
+
+        <TextView
+            android:id="@+id/trending_recyler_asset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asset: Rp 380.000"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/trending_recyler_point"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="10sp"
+            app:layout_constraintStart_toEndOf="@id/portofolio_list_linear"/>
+
+        <TextView
+            android:id="@+id/trending_recyler_total_investors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Investor: 353"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/trending_recyler_asset"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="5sp"
+            app:layout_constraintStart_toEndOf="@id/portofolio_list_linear"/>
 
 
         <ImageView
@@ -53,9 +79,9 @@
             android:layout_height="50sp"
             android:src="@drawable/portofolio_recycler_logo"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/trending_recycler_name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="10sp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/trending_recycler_name"
+            android:layout_marginRight="20sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,7 +92,7 @@
             android:textSize="20sp"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_recyler_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginRight="20sp"
             />

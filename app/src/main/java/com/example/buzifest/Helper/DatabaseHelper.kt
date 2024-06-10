@@ -119,8 +119,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val publisher = cursor.getString(cursor.getColumnIndexOrThrow("publisher"))
             val grossProfit = cursor.getInt(cursor.getColumnIndexOrThrow("grossProfit"))
             val totalInvested = cursor.getInt(cursor.getColumnIndexOrThrow("totalInvested"))
-            val tempPortfolio = TrendingPortfolio(Portfolio(id, storeName, address, province, image, storeType, logo, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit), totalInvested)
-            portfolioList.add(tempPortfolio)
+            val investorCount = cursor.getInt(cursor.getColumnIndexOrThrow("investorCount"))
+            val tempPortfolio = TrendingPortfolio(Portfolio(id, storeName, address, province, image, storeType, logo, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit), totalInvested, investorCount)
+
+                portfolioList.add(tempPortfolio)
         }
         cursor.close()
         db.close()

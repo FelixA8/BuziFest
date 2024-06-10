@@ -78,7 +78,11 @@
         android:paddingHorizontal="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:inputType="number"/>
+        android:hint="(in rupiah)"
+        android:textColorHint="@color/white"
+        android:textAppearance="@style/CustomEditTextHintLoginRegister"
+        android:inputType="number"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/buy_tvOutOf"

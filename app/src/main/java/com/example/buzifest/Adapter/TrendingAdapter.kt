@@ -19,9 +19,10 @@ import org.w3c.dom.Text
 class TrendingAdapter(private val trendingList: List<TrendingPortfolio>, context:Context):RecyclerView.Adapter<TrendingAdapter.ViewHolder>() {
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val trendingPoint =itemView.findViewById<ImageView>(R.id.trending_recyler_point)
-        val totalInvested = itemView.findViewById<TextView>(R.id.trending_recyler_totalInvested)
         val trendingLogo = itemView.findViewById<ImageView>(R.id.trending_recyler_logo)
         val trendingName = itemView.findViewById<TextView>(R.id.trending_recycler_name)
+        val trendingAsset = itemView.findViewById<TextView>(R.id.trending_recyler_asset)
+        val trendingTotalInvestor = itemView.findViewById<TextView>(R.id.trending_recyler_total_investors)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,6 +40,7 @@ class TrendingAdapter(private val trendingList: List<TrendingPortfolio>, context
             .load(currentItem.portfolio.logo)
             .into(holder.trendingLogo)
         holder.trendingName.text = currentItem.portfolio.storeName
-        holder.totalInvested.text = formatNumber(currentItem.totalInvested)
+        holder.trendingAsset.text = "Market Value: " + formatNumber(currentItem.totalInvested)
+        holder.trendingTotalInvestor.text = "Investors: " + currentItem.totalInvestor.toString()
     }
 }
