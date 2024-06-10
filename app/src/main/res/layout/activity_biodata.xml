@@ -27,14 +27,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/register_bottomui"
+            android:background="@drawable/register_bottomui_new"
             android:layout_gravity="center_horizontal">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Biodata"
-                android:textColor="#33404F"
+                android:textColor="@color/white"
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="40sp"
                 android:textAlignment="center"
@@ -51,6 +51,8 @@
                 android:inputType="textPersonName"
                 android:hint="First Name"
                 android:paddingLeft="15sp"
+                android:textAppearance="@style/CustomEditTextHintLoginRegister"
+                android:textColorHint="#BDBDBF"
                 />
 
             <EditText
@@ -63,6 +65,8 @@
                 android:inputType="textPersonName"
                 android:paddingLeft="15sp"
                 android:hint="Last Name"
+                android:textAppearance="@style/CustomEditTextHintLoginRegister"
+                android:textColorHint="#BDBDBF"
                 />
 
             <EditText
@@ -75,6 +79,8 @@
                 android:inputType="text"
                 android:paddingLeft="15sp"
                 android:hint="Address"
+                android:textAppearance="@style/CustomEditTextHintLoginRegister"
+                android:textColorHint="#BDBDBF"
                 />
 
             <EditText
@@ -87,6 +93,8 @@
                 android:inputType="number"
                 android:paddingLeft="15sp"
                 android:hint="ID Card Number"
+                android:textAppearance="@style/CustomEditTextHintLoginRegister"
+                android:textColorHint="#BDBDBF"
                 />
 
             <Button
@@ -100,7 +108,8 @@
                 android:fontFamily="@font/roboto_bold"
                 android:textAllCaps="false"
                 android:textSize="20sp"
-                android:layout_marginTop="30sp"/>
+                android:layout_marginTop="30sp"
+                android:textColor="@color/white"/>
 
 
         </LinearLayout>

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SettingsActivity">
+    tools:context=".Activity.SettingsActivity"
+    android:background="@color/black">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settings_constraint"
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
             <ImageView
                 android:layout_width="100sp"
                 android:layout_height="80sp"
-                android:src="@drawable/logo_dark"
+                android:src="@drawable/logo_white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -40,17 +41,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:textColor="#33404F"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textAlignment="center"
             android:fontFamily="@font/roboto_bold"
             app:layout_constraintTop_toBottomOf="@id/settings_constraint"/>
     <LinearLayout
         app:layout_constraintTop_toBottomOf="@id/settings_title"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20sp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/settingsChangePassword"
             android:layout_width="match_parent"
@@ -64,7 +66,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="20dp"
                 android:text="Change Password"
-                android:textColor="#33404F"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_tegular"/>
             <ImageView
@@ -72,7 +74,7 @@
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_marginHorizontal="20dp"
-                android:src="@drawable/detail_back_button"
+                android:src="@drawable/baseline_password_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:rotation="180"
@@ -95,7 +97,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="20dp"
                 android:text="Change Phone Number"
-                android:textColor="#33404F"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_tegular"/>
             <ImageView
@@ -103,7 +105,7 @@
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_marginHorizontal="20dp"
-                android:src="@drawable/detail_back_button"
+                android:src="@drawable/baseline_local_phone_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:rotation="180"
@@ -126,7 +128,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="20dp"
                 android:text="Change Language"
-                android:textColor="#33404F"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_tegular"/>
             <ImageView
@@ -134,7 +136,7 @@
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_marginHorizontal="20dp"
-                android:src="@drawable/detail_back_button"
+                android:src="@drawable/baseline_language_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:rotation="180"
@@ -157,7 +159,7 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="20dp"
                 android:text="Log Out"
-                android:textColor="#33404F"
+                android:textColor="#D65255"
                 android:textSize="16sp"
                 android:fontFamily="@font/roboto_tegular"/>
             <ImageView
@@ -165,7 +167,7 @@
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_marginHorizontal="20dp"
-                android:src="@drawable/detail_back_button"
+                android:src="@drawable/baseline_logout_24"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:rotation="180"
