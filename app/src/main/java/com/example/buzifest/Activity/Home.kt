@@ -126,6 +126,11 @@ class Home : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+                R.id.nav_with_draw -> {
+                    val intent = Intent(this, WithdrawActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 else -> false
             }
             drawerLayout.closeDrawer(GravityCompat.START)

@@ -166,14 +166,6 @@ class HomeFragment : Fragment() {
         }
 
         binding.homeMenuSettings.setOnClickListener {
-
-            // LOGOUT
-//            val sharedpreferences = requireContext().getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
-//            val editor = sharedpreferences.edit()
-//            editor.clear()
-//            editor.apply()
-//            val intent = Intent(requireContext(), MainActivity::class.java)
-//            startActivity(intent)
             val intent = Intent(context, SettingsActivity::class.java)
             startActivity(intent)
         }

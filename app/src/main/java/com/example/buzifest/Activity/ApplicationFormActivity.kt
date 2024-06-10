@@ -2,6 +2,8 @@ package com.example.buzifest.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.buzifest.Model.MainViewModel
@@ -11,11 +13,18 @@ import com.example.buzifest.databinding.ActivityApplicationFormBinding
 class ApplicationFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityApplicationFormBinding
     private lateinit var viewModel: MainViewModel
+    private lateinit var backButton: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityApplicationFormBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+
+        backButton = binding.detailBackButton
+
+        backButton.setOnClickListener {
+            finish()
+        }
 
         binding.applicationSubmitButton.setOnClickListener {
             if(binding.applicationBusinessName.text.isEmpty()) {

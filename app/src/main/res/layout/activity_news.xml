@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.NewsActivity"
+    android:fitsSystemWindows="true"
     android:background="@color/blue">
 
     <ImageView
@@ -44,8 +45,10 @@
         android:id="@+id/news_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/news_custom_recycler"
         app:layout_constraintTop_toBottomOf="@id/news_tv"
         android:layout_marginHorizontal="20sp"
+        android:paddingBottom="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

@@ -9,4 +9,7 @@
     <item
         android:id="@+id/nav_top_up"
         android:title="Top Up" />
+    <item
+        android:id="@+id/nav_with_draw"
+        android:title="Withdraw Money" />
 </menu>

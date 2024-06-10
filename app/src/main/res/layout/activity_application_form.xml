@@ -17,10 +17,10 @@
         android:layout_marginHorizontal="20sp">
 
         <ImageView
-            android:id="@+id/profileImageView"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:src="@drawable/home_profile"
+            android:id="@+id/detail_back_button"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:src="@drawable/detail_back_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
@@ -95,6 +95,7 @@
                 android:hint="Business Name"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
             <EditText
                 android:id="@+id/application_business_address"
@@ -106,6 +107,7 @@
                 android:hint="Business Address"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
             <EditText
                 android:id="@+id/application_business_province"
@@ -117,6 +119,7 @@
                 android:hint="Business Province"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <EditText
@@ -129,6 +132,7 @@
                 android:hint="Business Type"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <EditText
@@ -141,6 +145,7 @@
                 android:hint="Description"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <LinearLayout
@@ -183,6 +188,7 @@
                 android:hint="Funding Target"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <EditText
@@ -195,6 +201,7 @@
                 android:hint="Dividen Payout Period (in months)"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <LinearLayout
@@ -216,7 +223,8 @@
                     android:fontFamily="@font/roboto_bold"
                     android:textSize="15sp"
                     android:textColor="@color/white"
-                    android:layout_marginLeft="10sp"/>
+                    android:layout_marginLeft="10sp"
+                    android:textAppearance="@style/CustomEditTextHint"/>
 
             </LinearLayout>
 
@@ -237,6 +245,7 @@
                 android:hint="Public Shared Stock Ratio"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <EditText
@@ -249,6 +258,7 @@
                 android:hint="Main Shareholder"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
             <EditText
                 android:id="@+id/application_publisher"
@@ -260,6 +270,7 @@
                 android:hint="Publisher (applicant's business)"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
             <EditText
                 android:id="@+id/application_full_name"
@@ -271,6 +282,7 @@
                 android:hint="Seller Full Name"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
             <EditText
                 android:id="@+id/application_phone_number"
@@ -282,6 +294,7 @@
                 android:hint="Phone Number"
                 android:textColorHint="@color/white"
                 android:paddingLeft="10sp"
+                android:textAppearance="@style/CustomEditTextHint"
                 />
 
             <LinearLayout
