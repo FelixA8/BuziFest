@@ -79,7 +79,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
     }
 
-    fun checkUserPortfolioExist(currentPortfolioID: String):UserPortfolio {
+    fun checkUserPortfolioExist(currentPortfolioID: String, currentEmail: String):UserPortfolio {
         val db = readableDatabase
         val query = "SELECT * FROM userPortfolios"
         val cursor = db.rawQuery(query, null)
@@ -89,13 +89,42 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val userEmail = cursor.getString(cursor.getColumnIndexOrThrow("userEmail"))
             val purchaseAmount = cursor.getInt(cursor.getColumnIndexOrThrow("purchaseAmount"))
             val earnings = cursor.getInt(cursor.getColumnIndexOrThrow("earnings"))
-            if(portfolioID == currentPortfolioID) {
+            if(portfolioID == currentPortfolioID && userEmail == currentEmail) {
                 return UserPortfolio(id, userEmail, portfolioID, purchaseAmount, earnings);
             }
         }
         cursor.close()
         db.close()
         return UserPortfolio("","","",0,0)
+    }
+
+    fun selectTrendingPortfolio():ArrayList<TrendingPortfolio> {
+        val db = readableDatabase
+        val portfolioList:ArrayList<TrendingPortfolio> = ArrayList()
+        val query = "SELECT p.*, COUNT(up.id) AS investorCount, COALESCE(SUM(up.purchaseAmount), 0) AS totalInvested FROM portfolios p LEFT JOIN userPortfolios up ON p.id = up.portfolioID GROUP BY p.id ORDER BY investorCount DESC"
+        val cursor = db.rawQuery(query, null)
+        while(cursor.moveToNext()) {
+            val id = cursor.getString(cursor.getColumnIndexOrThrow("id"))
+            val storeName = cursor.getString(cursor.getColumnIndexOrThrow("storeName"))
+            val address = cursor.getString(cursor.getColumnIndexOrThrow("address"))
+            val province = cursor.getString(cursor.getColumnIndexOrThrow("province"))
+            val image = cursor.getString(cursor.getColumnIndexOrThrow("image"))
+            val logo = cursor.getString(cursor.getColumnIndexOrThrow("logo"))
+            val storeType = cursor.getString(cursor.getColumnIndexOrThrow("storeType"))
+            val fundingTarget = cursor.getInt(cursor.getColumnIndexOrThrow("fundingTarget"))
+            val description = cursor.getString(cursor.getColumnIndexOrThrow("description"))
+            val publicShareStock = cursor.getDouble(cursor.getColumnIndexOrThrow("publicShareStock"))
+            val dividendPayoutPeriod = cursor.getInt(cursor.getColumnIndexOrThrow("dividendPayoutPeriod"))
+            val mainShareHolder = cursor.getString(cursor.getColumnIndexOrThrow("mainShareHolder"))
+            val publisher = cursor.getString(cursor.getColumnIndexOrThrow("publisher"))
+            val grossProfit = cursor.getInt(cursor.getColumnIndexOrThrow("grossProfit"))
+            val totalInvested = cursor.getInt(cursor.getColumnIndexOrThrow("totalInvested"))
+            val tempPortfolio = TrendingPortfolio(Portfolio(id, storeName, address, province, image, storeType, logo, fundingTarget, description, publicShareStock, dividendPayoutPeriod, mainShareHolder, publisher, grossProfit), totalInvested)
+            portfolioList.add(tempPortfolio)
+        }
+        cursor.close()
+        db.close()
+        return portfolioList
     }
 
     fun selectSpecificUserPortfolioAmount(currentPortfolioID: String):Int{
@@ -217,7 +246,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         var totalInvestor = 0
         var totalInvested = 0
         val queryInvestor = "SELECT SUM(purchaseAmount) AS total from userPortfolios WHERE portfolioID = ?"
-        val queryInvested = "SELECT COUNT(*) AS total from userPortfolios WHERE portfolioID = ?"
+        val queryInvested = "SELECT COUNT(DISTINCT userEmail) AS total from userPortfolios WHERE portfolioID = ?"
         val cursorInvestor = db.rawQuery(queryInvestor, arrayOf(portfolioID))
         while (cursorInvestor.moveToNext()) {
             totalInvestor = cursorInvestor.getInt(cursorInvestor.getColumnIndexOrThrow("total"))

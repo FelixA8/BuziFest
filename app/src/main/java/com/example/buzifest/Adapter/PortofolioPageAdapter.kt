@@ -23,8 +23,8 @@ import org.w3c.dom.Text
 class PortofolioPageAdapter(private val userPortofolioList: List<UserPortfolio>, private val context: Context): RecyclerView.Adapter<PortofolioPageAdapter.ViewHolder>() {
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val portofolioPoint = itemView.findViewById<ImageView>(R.id.portofolio_recyler_point)
-        val portofolioPercentage = itemView.findViewById<TextView>(R.id.portofolio_recyler_percentage)
         val portfolioEarnings = itemView.findViewById<TextView>(R.id.portofolio_recyler_earnings)
+        val portfolioValue = itemView.findViewById<TextView>(R.id.portofolio_recyler_totalValue)
         val portofolioLogo = itemView.findViewById<ImageView>(R.id.portofolio_recyler_logo)
         val portofolioName = itemView.findViewById<TextView>(R.id.portofolio_recycler_name)
 
@@ -43,9 +43,9 @@ class PortofolioPageAdapter(private val userPortofolioList: List<UserPortfolio>,
         val sqlitedb = DatabaseHelper(context)
         val currentItem = userPortofolioList[position]
         val portfolio = sqlitedb.selectSpecificPortfolio(currentItem.portfolioID)
-        holder.portfolioEarnings.text = formatNumber(currentItem.totalProfit+currentItem.purchaseAmount)
+        holder.portfolioValue.text = "Rp ${formatNumber(currentItem.earnings+currentItem.purchaseAmount)}"
         holder.portofolioName.text = portfolio.storeName
-        holder.portofolioPercentage.text = String.format("%.2f",(currentItem.earnings.toDouble()/currentItem.purchaseAmount.toDouble())*100.0)
+        holder.portfolioEarnings.text = "Rp ${formatNumber(currentItem.earnings)}"
         holder.itemView.setOnClickListener {
             val intent = Intent(context, FulfilledPortfolioDetail::class.java).apply {
                 putExtra("portfolioID", currentItem.portfolioID)

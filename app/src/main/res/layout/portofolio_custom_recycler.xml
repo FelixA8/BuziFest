@@ -34,7 +34,7 @@
             android:layout_marginLeft="12sp"/>
 
         <TextView
-            android:id="@+id/portofolio_recyler_percentage"
+            android:id="@+id/portofolio_recyler_earnings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+ 1.5%"
@@ -47,7 +47,7 @@
             android:layout_marginLeft="10sp"/>
 
         <TextView
-            android:id="@+id/portofolio_recyler_earnings"
+            android:id="@+id/portofolio_recyler_totalValue"
             android:layout_width="130sp"
             android:layout_height="wrap_content"
             android:text="Rp 101.500,00"

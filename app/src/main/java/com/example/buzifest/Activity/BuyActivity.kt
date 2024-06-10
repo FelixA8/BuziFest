@@ -1,5 +1,6 @@
 package com.example.buzifest.Activity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.buzifest.Helper.*
+import com.example.buzifest.MainActivity
 import com.example.buzifest.R
 
 class BuyActivity : AppCompatActivity() {
@@ -32,7 +34,9 @@ class BuyActivity : AppCompatActivity() {
         val portfolio = sqliteDb.selectSpecificPortfolio(portfolioID)
 
         tvOutOf.text = "Rp. ${formatNumber(portfolio.fundingTarget - totalInvested)} left"
-
+        val sharedpreferences =
+            getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+        currentBalance = sharedpreferences.getString(MainActivity.BALANCE_KEY, null).toString().toInt()
         continueButton.setOnClickListener {
             if((portfolio.fundingTarget - totalInvested) < amount.text.toString().toInt()) {
                 Toast.makeText(this, "Too Many Funds", Toast.LENGTH_SHORT).show()

@@ -46,13 +46,8 @@
         app:layout_constraintTop_toBottomOf="@id/news_tv"
         android:layout_marginHorizontal="20sp"
         android:layout_marginTop="20sp"
+        tools:listitem="@layout/trending_recycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

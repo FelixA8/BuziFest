@@ -18,10 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.buzifest.Activity.Home
-import com.example.buzifest.Activity.NewsActivity
-import com.example.buzifest.Activity.PortfolioDetail
-import com.example.buzifest.Activity.SettingsActivity
+import com.example.buzifest.Activity.*
 import com.example.buzifest.Adapter.HomeNewsAdapter
 import com.example.buzifest.Adapter.PortfolioAdapter
 import com.example.buzifest.Data.*
@@ -99,7 +96,7 @@ class HomeFragment : Fragment() {
         }
 
         trending.setOnClickListener{
-            val intent = Intent(context, PortfolioDetail::class.java)
+            val intent = Intent(context, TrendingActivity::class.java)
             startActivity(intent)
         }
 

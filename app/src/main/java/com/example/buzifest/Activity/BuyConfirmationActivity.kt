@@ -58,8 +58,7 @@ class BuyConfirmationActivity : AppCompatActivity() {
 
         // button
         button.setOnClickListener{
-            val prevPortfolio = sqliteDb.checkUserPortfolioExist(portfolioID)
-            println("portfold: ${prevPortfolio}")
+            val prevPortfolio = sqliteDb.checkUserPortfolioExist(portfolioID, currentEmail)
             if(prevPortfolio.id == "") {
                 val userPortfolio = UserPortfolio(generateUUID(), currentEmail, portfolioID, amount, 0)
                 addUserPortfolio(userPortfolio, this)
