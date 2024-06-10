@@ -1,5 +1,6 @@
 package com.example.buzifest.Activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -36,6 +37,7 @@ class PortfolioDetail : AppCompatActivity(), OnMapReadyCallback {
         latitude = -6.20201
     }
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityPortfolioDetailBinding.inflate(layoutInflater)

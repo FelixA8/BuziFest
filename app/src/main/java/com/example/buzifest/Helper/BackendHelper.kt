@@ -102,7 +102,7 @@ public fun changeBalance(amount:Int, email: String,operation:String,sharedPrefer
         db.collection("users").document(email).update("balance", currentBalance+amount).addOnSuccessListener {
             println("User balance successfully updated!")
             editor.putString(MainActivity.BALANCE_KEY, (currentBalance + amount).toString())
-            currentBalance += amount
+            currentBalance = sharedPreferences.getString(MainActivity.BALANCE_KEY, null).toString().toInt()
             editor.apply()
         }.addOnFailureListener { e ->
             println("Error updating user email: $e")
@@ -111,7 +111,7 @@ public fun changeBalance(amount:Int, email: String,operation:String,sharedPrefer
         db.collection("users").document(email).update("balance", currentBalance-amount).addOnSuccessListener {
             println("User balance successfully updated!")
             editor.putString(MainActivity.BALANCE_KEY, (currentBalance - amount).toString())
-            currentBalance -= amount
+            currentBalance = sharedPreferences.getString(MainActivity.BALANCE_KEY, null).toString().toInt()
             editor.apply()
         }.addOnFailureListener { e ->
             println("Error updating user email: $e")
